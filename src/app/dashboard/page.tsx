@@ -3,7 +3,7 @@
 import * as React from "react"
 import { AppLayout } from "@/components/layout/AppLayout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Trophy, TrendingUp, Zap, AlertCircle, Target, History, Timer } from "lucide-react"
+import { Trophy, TrendingUp, Zap, AlertCircle, Target, History, Timer, Heart, Users, ArrowUpRight, Sparkles } from "lucide-react"
 import { 
   CartesianGrid, 
   XAxis, 
@@ -18,6 +18,8 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useToast } from "@/hooks/use-toast"
 import { cn } from "@/lib/utils"
+import { motion, AnimatePresence } from "framer-motion"
+import { Progress } from "@/components/ui/progress"
 
 const MOCK_DATA = [
   { name: 'Jan', score: 32 },
@@ -28,10 +30,18 @@ const MOCK_DATA = [
   { name: 'Jun', score: 36 },
 ]
 
+const LIVE_FEED = [
+  { id: 1, user: "Alice J.", action: "won a Pro Eagle Draw", time: "2m ago", amount: "$500", type: "win" },
+  { id: 2, user: "Bob W.", action: "reached 50 rounds", time: "5m ago", amount: "Gold Badge", type: "milestone" },
+  { id: 3, user: "Diana P.", action: "donated to Clean Water", time: "12m ago", amount: "$120", type: "impact" },
+  { id: 4, user: "Evan M.", action: "submitted 42pts score", time: "18m ago", amount: "Verified", type: "score" },
+]
+
 export default function Dashboard() {
   const { toast } = useToast()
   const [aiAnalysis, setAiAnalysis] = React.useState<AnalyzeGolfPerformanceOutput | null>(null)
   const [loading, setLoading] = React.useState(false)
+  const [progress, setProgress] = React.useState(0)
 
   const fetchAnalysis = async () => {
     setLoading(true)
@@ -58,11 +68,13 @@ export default function Dashboard() {
 
   React.useEffect(() => {
     fetchAnalysis()
+    const timer = setTimeout(() => setProgress(78), 500)
+    return () => clearTimeout(timer)
   }, [])
 
   return (
     <AppLayout>
-      <div className="space-y-16">
+      <div className="space-y-16 pb-20">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
           <div className="space-y-3">
             <h1 className="text-4xl md:text-6xl font-black text-primary tracking-tighter flex items-center gap-5">
@@ -89,126 +101,218 @@ export default function Dashboard() {
             { icon: Zap, label: "Active Entries", value: "12", sub: "Pool Eligibility: YES", color: "accent" },
           ].map((stat, i) => (
             <Card key={i} className="glass-card overflow-hidden hover:scale-[1.02] transition-all group border-2 border-transparent hover:border-primary/10">
-              <CardContent className="p-8 sm:p-12 space-y-6 sm:space-y-8">
+              <CardContent className="p-8 sm:p-10 space-y-6">
                 <div className={cn("p-4 rounded-[1.5rem] w-fit shadow-lg", stat.color === 'accent' ? 'bg-accent/10 text-accent' : 'bg-primary/10 text-primary')}>
-                  <stat.icon size={28} className={stat.color === 'accent' ? 'fill-accent' : ''} />
+                  <stat.icon size={24} className={stat.color === 'accent' ? 'fill-accent' : ''} />
                 </div>
                 <div className="space-y-1">
-                  <p className="text-[11px] font-black uppercase tracking-[0.3em] text-muted-foreground opacity-50 break-words leading-tight">{stat.label}</p>
-                  <h3 className={cn("text-4xl sm:text-5xl xl:text-6xl font-black tracking-tighter truncate", stat.color === 'accent' ? 'text-accent' : 'text-primary')}>{stat.value}</h3>
+                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground opacity-50 break-words leading-tight">{stat.label}</p>
+                  <h3 className={cn("text-4xl sm:text-5xl font-black tracking-tighter truncate leading-none", stat.color === 'accent' ? 'text-accent' : 'text-primary')}>{stat.value}</h3>
                 </div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-primary/60 truncate">{stat.sub}</p>
+                <p className="text-[9px] font-black uppercase tracking-widest text-primary/60 truncate">{stat.sub}</p>
               </CardContent>
             </Card>
           ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <Card className="glass-card p-6">
-            <CardHeader className="p-10">
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-3xl font-black text-primary tracking-tight">Express Dynamic</CardTitle>
-                  <CardDescription className="text-[11px] font-black uppercase tracking-[0.4em] text-muted-foreground mt-2">Historical Performance Flow</CardDescription>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          {/* Left Column (Chart & Activity) */}
+          <div className="lg:col-span-7 space-y-12">
+            <Card className="glass-card p-6">
+              <CardHeader className="p-10">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-3xl font-black text-primary tracking-tight">Express Dynamic</CardTitle>
+                    <CardDescription className="text-[11px] font-black uppercase tracking-[0.4em] text-muted-foreground mt-2">Historical Performance Flow</CardDescription>
+                  </div>
+                  <History className="text-primary/10" size={48} />
                 </div>
-                <History className="text-primary/10" size={48} />
-              </div>
-            </CardHeader>
-            <CardContent className="h-[400px] px-6">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={MOCK_DATA.slice(-5)}>
-                  <defs>
-                    <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="8 8" vertical={false} stroke="rgba(0,0,0,0.03)" />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold', fill: 'hsl(var(--primary))' }} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold', fill: 'hsl(var(--primary))' }} />
-                  <Tooltip 
-                    contentStyle={{ 
-                      borderRadius: '2.5rem', 
-                      border: 'none', 
-                      boxShadow: '0 30px 60px rgba(0,0,0,0.1)',
-                      background: 'white',
-                      padding: '20px'
-                    }} 
-                  />
-                  <Area type="monotone" dataKey="score" stroke="hsl(var(--primary))" strokeWidth={6} fill="url(#colorScore)" />
-                </AreaChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
+              </CardHeader>
+              <CardContent className="h-[400px] px-6">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={MOCK_DATA.slice(-5)}>
+                    <defs>
+                      <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="8 8" vertical={false} stroke="rgba(0,0,0,0.03)" />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold', fill: 'hsl(var(--primary))' }} />
+                    <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold', fill: 'hsl(var(--primary))' }} />
+                    <Tooltip 
+                      contentStyle={{ 
+                        borderRadius: '2.5rem', 
+                        border: 'none', 
+                        boxShadow: '0 30px 60px rgba(0,0,0,0.1)',
+                        background: 'white',
+                        padding: '20px'
+                      }} 
+                    />
+                    <Area type="monotone" dataKey="score" stroke="hsl(var(--primary))" strokeWidth={6} fill="url(#colorScore)" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
 
-          <Card className="glass-card overflow-hidden flex flex-col bg-primary/5 border-none">
-            <CardHeader className="bg-primary text-white p-12 relative overflow-hidden">
-               <Zap className="absolute top-[-40px] right-[-40px] w-64 h-64 opacity-10" />
-               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative z-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Charity Milestone tracker */}
+              <Card className="glass-card p-10 bg-gradient-to-br from-white to-primary/5 relative overflow-hidden group">
+                <Heart className="absolute -top-6 -right-6 w-32 h-32 text-primary/5 rotate-12 transition-transform group-hover:scale-110" />
+                <div className="relative z-10 space-y-6">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-primary rounded-xl text-white shadow-lg"><Heart size={20} /></div>
+                    <div className="space-y-0.5">
+                      <h4 className="text-lg font-black text-primary tracking-tight">Charity Goal</h4>
+                      <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Clean Water Project</p>
+                    </div>
+                  </div>
                   <div className="space-y-2">
-                    <CardTitle className="text-4xl font-black tracking-tighter">GoCharity AI</CardTitle>
-                    <p className="text-[11px] font-black uppercase tracking-[0.5em] text-white/60">EXPRESS INTELLIGENCE ENGINE</p>
+                    <div className="flex justify-between items-end">
+                      <span className="text-2xl font-black text-primary tracking-tighter">$12,450 <span className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-widest">RAISED</span></span>
+                      <span className="text-[10px] font-black text-accent uppercase tracking-widest">78% Complete</span>
+                    </div>
+                    <Progress value={progress} className="h-3 bg-primary/5" />
                   </div>
-                  <Button variant="outline" size="sm" onClick={fetchAnalysis} disabled={loading} className="rounded-full bg-white/10 border-white/20 hover:bg-white text-white hover:text-primary font-black uppercase tracking-widest text-[10px] px-8 h-12 shadow-xl shadow-black/10">
-                    {loading ? "Syncing..." : "Refresh"}
+                  <Button className="w-full bg-white border border-primary/10 text-primary hover:bg-primary hover:text-white rounded-2xl font-black uppercase tracking-widest text-[9px] h-12 shadow-sm">
+                    View Impact Report
                   </Button>
-               </div>
-            </CardHeader>
-            <CardContent className="p-12 space-y-12 flex-1">
-              {aiAnalysis ? (
-                <div className="space-y-12">
-                  <div className="p-10 rounded-[3rem] bg-white shadow-2xl shadow-black/[0.03] border border-secondary italic text-primary/80 font-bold leading-relaxed text-lg">
-                    "{aiAnalysis.summary}"
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div className="space-y-6">
-                      <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-primary/40 ml-2">Power Strengths</h4>
-                      <div className="space-y-4">
-                        {aiAnalysis.strengths.map((s, i) => (
-                          <div key={i} className="flex items-center p-5 rounded-[2rem] bg-white border border-secondary text-[12px] font-black text-primary uppercase tracking-tight shadow-sm hover:translate-x-2 transition-transform">
-                             <TrendingUp size={16} className="mr-4 text-accent" />
-                             {s}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="space-y-6">
-                      <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-primary/40 ml-2">Critical Fixes</h4>
-                      <div className="space-y-4">
-                        {aiAnalysis.weaknesses.map((w, i) => (
-                          <div key={i} className="flex items-center p-5 rounded-[2rem] bg-accent/5 border border-accent/10 text-[12px] font-black text-accent uppercase tracking-tight shadow-sm hover:translate-x-2 transition-transform">
-                             <AlertCircle size={16} className="mr-4" />
-                             {w}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+                </div>
+              </Card>
 
-                  <div className="pt-12 border-t border-secondary/40 space-y-8">
-                    <h4 className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/40 ml-2">Actionable 10m Drills</h4>
-                    <div className="grid grid-cols-1 gap-6">
-                      {aiAnalysis.actionableTips.map((tip, i) => (
-                        <div key={i} className="flex items-start gap-6 p-8 bg-white rounded-[3rem] border border-secondary hover:shadow-xl transition-all cursor-default group">
-                          <div className="p-4 bg-primary rounded-[1.5rem] text-white shadow-2xl shadow-primary/20 group-hover:scale-110 transition-transform"><Target size={24} /></div>
-                          <div className="flex-1 space-y-1 pt-1">
-                             <p className="text-[13px] font-black leading-relaxed text-primary uppercase tracking-tight">{tip}</p>
-                             <p className="text-[9px] font-black text-accent uppercase tracking-[0.4em]">EXPRESS PROTOCOL</p>
-                          </div>
-                        </div>
-                      ))}
+              {/* Community Live Feed */}
+              <Card className="glass-card p-10 bg-white/40 overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-2 h-full bg-accent/20" />
+                <div className="space-y-6 h-full flex flex-col">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary flex items-center gap-2">
+                      <Users size={14} /> Community Live
+                    </h4>
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-1.5 h-1.5 rounded-full bg-accent animate-ping" />
+                      <span className="text-[8px] font-black uppercase tracking-widest text-accent">Real-time</span>
                     </div>
                   </div>
+                  <div className="space-y-4 overflow-hidden flex-1">
+                    {LIVE_FEED.map((item, idx) => (
+                      <motion.div 
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.1 }}
+                        key={item.id} 
+                        className="flex items-center justify-between p-3 rounded-2xl bg-white/60 border border-white shadow-sm"
+                      >
+                        <div className="flex flex-col">
+                          <span className="text-[10px] font-black text-primary tracking-tight">{item.user}</span>
+                          <span className="text-[8px] font-bold text-muted-foreground/60 uppercase tracking-widest truncate max-w-[100px]">{item.action}</span>
+                        </div>
+                        <div className="text-right">
+                          <span className="text-[9px] font-black text-accent block">{item.amount}</span>
+                          <span className="text-[7px] font-bold text-muted-foreground uppercase opacity-40">{item.time}</span>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center py-28 text-primary/10">
-                  <Zap size={100} className="mb-8 animate-pulse fill-primary/10" />
-                  <p className="text-[12px] font-black uppercase tracking-[0.6em]">Syncing Express Analytics...</p>
+              </Card>
+            </div>
+            
+            {/* New "Stunning" Rewards Animation Area */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="p-12 rounded-[4rem] bg-primary text-white relative overflow-hidden group shadow-2xl shadow-primary/20"
+            >
+              <Sparkles className="absolute top-[-40px] left-[-40px] w-64 h-64 opacity-10 animate-pulse" />
+              <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
+                <div className="space-y-4 text-center md:text-left">
+                  <Badge className="bg-white/10 text-white border-none px-4 py-1.5 rounded-full font-black uppercase tracking-widest text-[9px]">Limited Challenge</Badge>
+                  <h3 className="text-4xl font-black tracking-tighter leading-none">The Albatross Quest</h3>
+                  <p className="text-white/60 text-xs font-bold uppercase tracking-widest leading-relaxed">Submit 3 rounds over 36pts this month to unlock the "Express Elite" exclusive driver skin.</p>
                 </div>
-              )}
-            </CardContent>
-          </Card>
+                <div className="relative">
+                  <div className="bull-button scale-125 !bg-white !text-primary !border-primary group-hover:scale-150 transition-transform duration-700">
+                    JOIN
+                  </div>
+                  <ArrowUpRight className="absolute -top-2 -right-2 text-white animate-bounce" size={24} />
+                </div>
+              </div>
+              <div className="absolute bottom-[-20px] right-[-20px] w-48 h-48 bg-accent/20 rounded-full blur-3xl" />
+            </motion.div>
+          </div>
+
+          {/* Right Column (AI Insights) */}
+          <div className="lg:col-span-5">
+            <Card className="glass-card overflow-hidden h-full flex flex-col bg-primary/5 border-none">
+              <CardHeader className="bg-primary text-white p-12 relative overflow-hidden">
+                 <Zap className="absolute top-[-40px] right-[-40px] w-64 h-64 opacity-10" />
+                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative z-10">
+                    <div className="space-y-2">
+                      <CardTitle className="text-4xl font-black tracking-tighter">GoCharity AI</CardTitle>
+                      <p className="text-[11px] font-black uppercase tracking-[0.5em] text-white/60">EXPRESS INTELLIGENCE ENGINE</p>
+                    </div>
+                    <Button variant="outline" size="sm" onClick={fetchAnalysis} disabled={loading} className="rounded-full bg-white/10 border-white/20 hover:bg-white text-white hover:text-primary font-black uppercase tracking-widest text-[10px] px-8 h-12 shadow-xl shadow-black/10">
+                      {loading ? "Syncing..." : "Refresh"}
+                    </Button>
+                 </div>
+              </CardHeader>
+              <CardContent className="p-10 space-y-12 flex-1">
+                {aiAnalysis ? (
+                  <div className="space-y-12">
+                    <div className="p-10 rounded-[3rem] bg-white shadow-2xl shadow-black/[0.03] border border-secondary italic text-primary/80 font-bold leading-relaxed text-lg">
+                      "{aiAnalysis.summary}"
+                    </div>
+                    
+                    <div className="space-y-8">
+                      <div className="space-y-6">
+                        <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-primary/40 ml-2">Power Strengths</h4>
+                        <div className="space-y-4">
+                          {aiAnalysis.strengths.map((s, i) => (
+                            <div key={i} className="flex items-center p-5 rounded-[2rem] bg-white border border-secondary text-[12px] font-black text-primary uppercase tracking-tight shadow-sm hover:translate-x-2 transition-transform">
+                               <TrendingUp size={16} className="mr-4 text-accent" />
+                               {s}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="space-y-6">
+                        <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-primary/40 ml-2">Critical Fixes</h4>
+                        <div className="space-y-4">
+                          {aiAnalysis.weaknesses.map((w, i) => (
+                            <div key={i} className="flex items-center p-5 rounded-[2rem] bg-accent/5 border border-accent/10 text-[12px] font-black text-accent uppercase tracking-tight shadow-sm hover:translate-x-2 transition-transform">
+                               <AlertCircle size={16} className="mr-4" />
+                               {w}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-12 border-t border-secondary/40 space-y-8">
+                      <h4 className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/40 ml-2">Actionable 10m Drills</h4>
+                      <div className="grid grid-cols-1 gap-6">
+                        {aiAnalysis.actionableTips.map((tip, i) => (
+                          <div key={i} className="flex items-start gap-6 p-8 bg-white rounded-[3rem] border border-secondary hover:shadow-xl transition-all cursor-default group">
+                            <div className="p-4 bg-primary rounded-[1.5rem] text-white shadow-2xl shadow-primary/20 group-hover:scale-110 transition-transform shrink-0"><Target size={24} /></div>
+                            <div className="flex-1 space-y-1 pt-1">
+                               <p className="text-[13px] font-black leading-relaxed text-primary uppercase tracking-tight">{tip}</p>
+                               <p className="text-[9px] font-black text-accent uppercase tracking-[0.4em]">EXPRESS PROTOCOL</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-28 text-primary/10">
+                    <Zap size={100} className="mb-8 animate-pulse fill-primary/10" />
+                    <p className="text-[12px] font-black uppercase tracking-[0.6em]">Syncing Express Analytics...</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </AppLayout>
