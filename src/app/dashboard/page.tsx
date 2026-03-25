@@ -17,6 +17,7 @@ import { analyzeGolfPerformance, type AnalyzeGolfPerformanceOutput } from "@/ai/
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useToast } from "@/hooks/use-toast"
+import { cn } from "@/lib/utils"
 
 const MOCK_DATA = [
   { name: 'Jan', score: 32 },
