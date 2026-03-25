@@ -1,4 +1,3 @@
-
 "use client"
 
 import * as React from "react"
@@ -10,12 +9,8 @@ import {
   Target, 
   Heart, 
   CreditCard, 
-  Settings, 
-  Gift,
-  PanelLeft,
-  ChevronRight,
   ShieldCheck,
-  Zap,
+  ChevronRight,
   Sparkles
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -47,7 +42,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full relative bg-background overflow-hidden">
-        {/* Dynamic Abstract Magic Orbs */}
+        {/* Dynamic Abstract Magic Orbs - Firebase Themed Glows */}
         <div className="fixed top-[-10%] left-[-5%] w-[40vw] h-[40vw] bg-primary/10 rounded-full blur-[120px] pointer-events-none animate-float" style={{ animationDuration: '15s' }} />
         <div className="fixed bottom-[-5%] right-[-10%] w-[35vw] h-[35vw] bg-accent/10 rounded-full blur-[120px] pointer-events-none animate-float" style={{ animationDuration: '18s', animationDelay: '-4s' }} />
         <div className="fixed top-[20%] right-[10%] w-[20vw] h-[20vw] bg-primary/5 rounded-full blur-[100px] pointer-events-none animate-float" style={{ animationDuration: '20s', animationDelay: '-8s' }} />

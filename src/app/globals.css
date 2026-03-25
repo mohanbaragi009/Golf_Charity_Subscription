@@ -1,29 +1,29 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 133 24% 96%;
-    --foreground: 136 68% 10%;
+    /* Firebase Inspired Palette */
+    --background: 210 20% 98%;
+    --foreground: 210 40% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 136 68% 10%;
+    --card-foreground: 210 40% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 136 68% 10%;
-    --primary: 136 68% 30%;
+    --popover-foreground: 210 40% 10%;
+    --primary: 30 100% 50%; /* Firebase Orange */
     --primary-foreground: 0 0% 100%;
-    --secondary: 133 24% 90%;
-    --secondary-foreground: 136 68% 20%;
-    --muted: 133 10% 90%;
-    --muted-foreground: 136 20% 45%;
-    --accent: 85 100% 50%;
-    --accent-foreground: 136 68% 10%;
+    --secondary: 210 20% 90%;
+    --secondary-foreground: 210 40% 20%;
+    --muted: 210 10% 90%;
+    --muted-foreground: 210 20% 45%;
+    --accent: 45 100% 50%; /* Firebase Yellow */
+    --accent-foreground: 210 40% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 136 20% 88%;
-    --input: 136 20% 88%;
-    --ring: 136 68% 30%;
+    --border: 210 20% 88%;
+    --input: 210 20% 88%;
+    --ring: 30 100% 50%;
     --radius: 1.5rem;
   }
 }
@@ -35,10 +35,10 @@
   body {
     @apply bg-background text-foreground font-body selection:bg-primary/20;
     background-image: 
-      radial-gradient(at 0% 0%, hsla(136, 68%, 30%, 0.05) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, hsla(85, 100%, 50%, 0.05) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, hsla(136, 68%, 30%, 0.05) 0px, transparent 50%),
-      radial-gradient(at 0% 100%, hsla(85, 100%, 50%, 0.05) 0px, transparent 50%);
+      radial-gradient(at 0% 0%, hsla(30, 100%, 50%, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(45, 100%, 50%, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, hsla(30, 100%, 50%, 0.05) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, hsla(45, 100%, 50%, 0.05) 0px, transparent 50%);
     background-attachment: fixed;
     overflow-x: hidden;
   }

@@ -61,7 +61,7 @@ export default function Dashboard() {
             <p className="text-muted-foreground font-medium">Elevate your game with AI-driven insights and charity tracking.</p>
           </div>
           <div className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/40 backdrop-blur-md border border-white/60 shadow-sm">
-             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+             <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
              <span className="text-xs font-bold uppercase tracking-widest text-primary">Live Stats Verified</span>
           </div>
         </div>
@@ -78,7 +78,7 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-5xl font-bold text-primary tracking-tighter">14.5</div>
-              <div className="mt-4 inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700 text-[10px] font-black uppercase tracking-widest">
+              <div className="mt-4 inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest">
                 <TrendingUp size={12} className="mr-1.5" /> -0.4 Progress
               </div>
             </CardContent>
@@ -178,8 +178,8 @@ export default function Dashboard() {
                       <h4 className="text-[10px] font-black uppercase text-muted-foreground tracking-[0.2em]">Verified Strengths</h4>
                       <div className="space-y-2">
                         {aiAnalysis.strengths.map((s, i) => (
-                          <div key={i} className="flex items-center p-3 rounded-2xl bg-green-50/50 border border-green-100/50 text-xs font-bold text-green-700">
-                             <div className="mr-3 p-1.5 bg-green-100 rounded-lg"><TrendingUp size={12} /></div>
+                          <div key={i} className="flex items-center p-3 rounded-2xl bg-primary/5 border border-primary/10 text-xs font-bold text-primary">
+                             <div className="mr-3 p-1.5 bg-primary/10 rounded-lg"><TrendingUp size={12} /></div>
                             {s}
                           </div>
                         ))}
@@ -189,8 +189,8 @@ export default function Dashboard() {
                       <h4 className="text-[10px] font-black uppercase text-muted-foreground tracking-[0.2em]">Optimization Required</h4>
                       <div className="space-y-2">
                         {aiAnalysis.weaknesses.map((w, i) => (
-                          <div key={i} className="flex items-center p-3 rounded-2xl bg-orange-50/50 border border-orange-100/50 text-xs font-bold text-orange-700">
-                             <div className="mr-3 p-1.5 bg-orange-100 rounded-lg"><AlertCircle size={12} /></div>
+                          <div key={i} className="flex items-center p-3 rounded-2xl bg-accent/5 border border-accent/10 text-xs font-bold text-primary">
+                             <div className="mr-3 p-1.5 bg-accent/20 rounded-lg"><AlertCircle size={12} /></div>
                             {w}
                           </div>
                         ))}

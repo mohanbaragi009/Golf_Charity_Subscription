@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { AppLayout } from "@/components/layout/AppLayout"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -10,9 +10,9 @@ import { Calendar as CalendarIcon, Target, Trophy, Info, History, Sparkles } fro
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { format } from "date-fns"
-import { useToast } from "@/hooks/use-toast"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
+import { useToast } from "@/hooks/use-toast"
 
 type GolfScore = {
   id: string
@@ -167,7 +167,7 @@ export default function ScoreEntry() {
             </CardContent>
           </Card>
 
-          <div className="p-6 bg-accent/5 backdrop-blur-md rounded-[2rem] flex items-start gap-4 border border-accent/20">
+          <div className="p-6 bg-primary/5 backdrop-blur-md rounded-[2rem] flex items-start gap-4 border border-primary/20">
             <Info size={20} className="text-primary mt-0.5 shrink-0" />
             <p className="text-xs font-bold text-primary/70 leading-relaxed uppercase tracking-widest opacity-80">
               Only your latest 5 verified scores are used for draw weightings and coaching.
@@ -186,7 +186,7 @@ export default function ScoreEntry() {
                     <CardDescription className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Recent verified rounds</CardDescription>
                   </div>
                 </div>
-                <Badge className="bg-green-100 text-green-700 hover:bg-green-100 border-none px-4 py-1.5 rounded-full font-black uppercase tracking-widest text-[10px]">Active Season</Badge>
+                <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-none px-4 py-1.5 rounded-full font-black uppercase tracking-widest text-[10px]">Active Season</Badge>
               </div>
             </CardHeader>
             <Table>
@@ -229,7 +229,7 @@ export default function ScoreEntry() {
                </div>
             </Card>
             <Card className="p-8 glass-card rounded-[3rem] relative overflow-hidden group">
-               <div className="absolute top-8 right-8 w-3 h-3 rounded-full bg-green-500 animate-pulse shadow-[0_0_15px_rgba(34,197,94,0.5)]" />
+               <div className="absolute top-8 right-8 w-3 h-3 rounded-full bg-accent animate-pulse shadow-[0_0_15px_rgba(var(--accent),0.5)]" />
                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-2">Eligibility Status</p>
                <h3 className="text-4xl font-black text-primary tracking-tight">Active</h3>
                <p className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest mt-2">Qualified for Monthly Draws</p>

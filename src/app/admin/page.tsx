@@ -1,4 +1,3 @@
-
 "use client"
 
 import * as React from "react"
@@ -32,7 +31,6 @@ import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { prizeDrawWinnerSelection, type PrizeDrawWinnerSelectionOutput } from "@/ai/flows/prize-draw-winner-selection"
 import { Badge } from "@/components/ui/badge"
-import { useToast } from "@/hooks/use-toast"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -46,6 +44,7 @@ import {
   ResponsiveContainer,
   Cell
 } from 'recharts'
+import { useToast } from "@/hooks/use-toast"
 
 const MOCK_USERS = [
   { id: "usr_1", name: "Alice Johnson", email: "alice@example.com", score: 85, handicap: 12.0, status: "Active", plan: "Pro Eagle" },
@@ -117,7 +116,7 @@ export default function AdminPortal() {
             <p className="text-muted-foreground font-bold uppercase tracking-widest text-[10px] opacity-60">Strategic System Management Engine</p>
           </div>
           <div className="flex items-center gap-3 px-6 py-3 rounded-2xl bg-white/40 backdrop-blur-md border border-white/60 shadow-sm">
-             <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+             <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
              <span className="text-[10px] font-black uppercase tracking-widest text-primary">System Integrity Verified</span>
           </div>
         </div>
@@ -152,7 +151,7 @@ export default function AdminPortal() {
                     </div>
                     <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-50">{stat.label}</p>
                     <h3 className="text-3xl font-black text-primary tracking-tighter">{stat.value}</h3>
-                    <p className="text-[9px] font-black text-green-600 uppercase tracking-widest">{stat.sub}</p>
+                    <p className="text-[9px] font-black text-primary/80 uppercase tracking-widest">{stat.sub}</p>
                   </Card>
                 ))}
              </div>
@@ -379,7 +378,7 @@ export default function AdminPortal() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge variant={user.status === "Active" ? "default" : "secondary"} className={user.status === "Active" ? "bg-green-100 text-green-700 border-none px-4 py-1.5 rounded-full font-black uppercase tracking-widest text-[9px]" : "px-4 py-1.5 rounded-full font-black uppercase tracking-widest text-[9px]"}>
+                        <Badge variant={user.status === "Active" ? "default" : "secondary"} className={user.status === "Active" ? "bg-primary/10 text-primary border-none px-4 py-1.5 rounded-full font-black uppercase tracking-widest text-[9px]" : "px-4 py-1.5 rounded-full font-black uppercase tracking-widest text-[9px]"}>
                           {user.status}
                         </Badge>
                       </TableCell>
@@ -415,7 +414,7 @@ export default function AdminPortal() {
                         <h4 className="font-black text-2xl text-primary tracking-tighter">{c}</h4>
                         <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground opacity-40">Verified NGO Partner</p>
                       </div>
-                      <Badge className="bg-green-100 text-green-700 font-black uppercase tracking-widest text-[9px] px-4 py-1.5 rounded-full">ACTIVE</Badge>
+                      <Badge className="bg-primary/10 text-primary font-black uppercase tracking-widest text-[9px] px-4 py-1.5 rounded-full">ACTIVE</Badge>
                     </div>
                     <p className="text-xs font-bold text-muted-foreground/60 leading-relaxed uppercase tracking-widest line-clamp-3">
                       Global distribution management for {c.toLowerCase()} impact projects across developed and emerging regions.
