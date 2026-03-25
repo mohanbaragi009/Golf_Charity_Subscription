@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Check, Trophy, Heart, Gift, CreditCard, Star, Timer, ShieldCheck, Sparkles } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { cn } from "@/lib/utils"
 
 const PLANS = [
   {
@@ -90,11 +91,12 @@ export default function Subscriptions() {
           {PLANS.map((plan) => (
             <Card 
               key={plan.name} 
-              className={`relative flex flex-col h-full overflow-hidden border-2 transition-all duration-700 rounded-[3.5rem] group ${
+              className={cn(
+                "relative flex flex-col h-full overflow-hidden border-2 transition-all duration-700 rounded-[3.5rem] group",
                 plan.popular 
                   ? "border-primary bg-white/60 backdrop-blur-xl shadow-2xl shadow-primary/10 scale-105 z-10" 
                   : "border-white/40 bg-white/30 backdrop-blur-lg shadow-xl hover:border-primary/20 hover:scale-[1.02]"
-              }`}
+              )}
             >
               {plan.popular && (
                 <div className="absolute top-0 right-0 left-0 bg-primary text-white text-center py-2.5 text-[9px] font-black uppercase tracking-[0.4em] shadow-lg">
@@ -140,11 +142,12 @@ export default function Subscriptions() {
               </CardContent>
               <CardFooter className="pt-6 pb-12 px-10">
                 <Button 
-                  className={`w-full h-16 rounded-[2rem] font-black uppercase tracking-[0.2em] text-sm transition-all duration-500 ${
+                  className={cn(
+                    "w-full h-16 rounded-[2rem] font-black uppercase tracking-[0.2em] text-sm transition-all duration-500",
                     plan.name === currentPlan 
                       ? "bg-muted text-muted-foreground/40 cursor-default" 
                       : "bg-primary text-white hover:bg-primary/90 shadow-2xl shadow-primary/20 hover:scale-[1.03] active:scale-[0.97]"
-                  }`}
+                  )}
                   onClick={() => handleSubscribe(plan.name)}
                   disabled={plan.name === currentPlan}
                 >
