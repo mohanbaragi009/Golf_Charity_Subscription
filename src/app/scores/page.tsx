@@ -37,7 +37,6 @@ export default function ScoreEntry() {
   const [loading, setLoading] = React.useState(false)
   const [scores, setScores] = React.useState<GolfScore[]>(INITIAL_SCORES)
 
-  // Fix: Hydration-safe initial date
   React.useEffect(() => {
     setDate(new Date())
   }, [])
@@ -73,12 +72,11 @@ export default function ScoreEntry() {
         course: course,
       }
 
-      const updatedScores = [newScore, ...scores].slice(0, 5)
-      setScores(updatedScores)
+      setScores([newScore, ...scores].slice(0, 5))
 
       toast({
         title: "Verified Submission!",
-        description: `Your score of ${scoreNum} is now pending verification.`,
+        description: `Your GoCharity score of ${scoreNum} is now pending verification.`,
       })
       setScore("")
       setCourse("")
@@ -88,74 +86,67 @@ export default function ScoreEntry() {
 
   return (
     <AppLayout>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        <div className="lg:col-span-1 space-y-10">
-          <div className="space-y-2">
-            <h1 className="text-4xl font-bold text-primary">Score Entry</h1>
-            <p className="text-muted-foreground font-medium">Record your performance for draw eligibility.</p>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="lg:col-span-1 space-y-12">
+          <div className="space-y-3">
+            <h1 className="text-5xl font-black text-primary tracking-tighter">Score Registry</h1>
+            <p className="text-muted-foreground font-bold uppercase tracking-[0.3em] text-[10px]">Express Pool Verification</p>
           </div>
 
-          <Card className="glass-card rounded-[3rem] overflow-hidden">
-            <div className="bg-primary p-8 text-white relative overflow-hidden">
-              <Sparkles className="absolute top-[-20px] right-[-20px] w-32 h-32 opacity-10" />
+          <Card className="glass-card rounded-[4rem] overflow-hidden">
+            <div className="bg-primary p-12 text-white relative overflow-hidden">
+              <Sparkles className="absolute top-[-30px] right-[-30px] w-48 h-48 opacity-10" />
               <div className="relative z-10 flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-bold">New Round</h2>
-                  <p className="text-white/60 text-xs font-black uppercase tracking-widest mt-1">Stableford points (1-45)</p>
+                  <h2 className="text-3xl font-black tracking-tighter">New Round</h2>
+                  <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.3em] mt-2">Stableford Index (1-45)</p>
                 </div>
-                <div className="bg-white/20 p-3 rounded-2xl backdrop-blur-md">
-                   <Trophy size={28} className="text-accent" />
+                <div className="bg-white/10 p-5 rounded-[1.5rem] backdrop-blur-xl shadow-2xl">
+                   <Trophy size={36} className="text-accent fill-accent" />
                 </div>
               </div>
             </div>
-            <CardContent className="p-8">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="date" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Play Date</Label>
+            <CardContent className="p-12">
+              <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="space-y-3">
+                  <Label htmlFor="date" className="text-[11px] font-black uppercase tracking-[0.4em] text-muted-foreground ml-2">Round Timestamp</Label>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
                         variant={"outline"}
-                        className="w-full justify-start text-left font-bold rounded-2xl h-14 bg-white/40 border-white/60"
+                        className="w-full justify-start text-left font-black rounded-[1.5rem] h-16 bg-secondary/50 border-none px-8"
                       >
-                        <CalendarIcon className="mr-3 text-primary opacity-60" size={18} />
-                        {date ? format(date, "PPP") : <span>Pick a date</span>}
+                        <CalendarIcon className="mr-4 text-primary opacity-40" size={20} />
+                        {date ? format(date, "PPP") : <span>Select Date</span>}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0 rounded-3xl overflow-hidden border-white/40 shadow-2xl" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={date}
-                        onSelect={setDate}
-                        initialFocus
-                      />
+                    <PopoverContent className="w-auto p-0 rounded-[2rem] overflow-hidden border-none shadow-2xl" align="start">
+                      <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
                     </PopoverContent>
                   </Popover>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="score" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Stableford Total</Label>
+                <div className="space-y-3">
+                  <Label htmlFor="score" className="text-[11px] font-black uppercase tracking-[0.4em] text-muted-foreground ml-2">Stableford Points</Label>
                   <div className="relative">
                     <Input
                       id="score"
                       type="number"
-                      min="1"
-                      max="45"
                       placeholder="Range: 1-45"
-                      className="rounded-2xl h-14 pl-12 bg-white/40 border-white/60 font-bold"
+                      className="rounded-[1.5rem] h-16 pl-14 bg-secondary/50 border-none font-black text-lg"
                       value={score}
                       onChange={(e) => setScore(e.target.value)}
                     />
-                    <Target className="absolute left-4 top-1/2 -translate-y-1/2 text-primary opacity-60" size={18} />
+                    <Target className="absolute left-6 top-1/2 -translate-y-1/2 text-primary opacity-40" size={22} />
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="course" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Golf Course</Label>
+                <div className="space-y-3">
+                  <Label htmlFor="course" className="text-[11px] font-black uppercase tracking-[0.4em] text-muted-foreground ml-2">Course Name</Label>
                   <Input
                     id="course"
-                    placeholder="Enter course name..."
-                    className="rounded-2xl h-14 bg-white/40 border-white/60 font-bold px-6"
+                    placeholder="Enter course..."
+                    className="rounded-[1.5rem] h-16 bg-secondary/50 border-none font-black px-8"
                     value={course}
                     onChange={(e) => setCourse(e.target.value)}
                   />
@@ -163,81 +154,84 @@ export default function ScoreEntry() {
 
                 <Button 
                   type="submit" 
-                  className="w-full h-14 font-black uppercase tracking-[0.2em] rounded-2xl bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full h-20 font-black uppercase tracking-[0.4em] rounded-[2rem] bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/30 transition-all hover:scale-105 active:scale-95 text-xs"
                   disabled={loading}
                 >
-                  {loading ? "Recording..." : "Finalize Score"}
+                  {loading ? "Verifying..." : "Finalize Score"}
                 </Button>
               </form>
             </CardContent>
           </Card>
 
-          <div className="p-6 bg-primary/5 backdrop-blur-md rounded-[2rem] flex items-start gap-4 border border-primary/20">
-            <Info size={20} className="text-primary mt-0.5 shrink-0" />
-            <p className="text-xs font-bold text-primary/70 leading-relaxed uppercase tracking-widest opacity-80">
-              Only your latest 5 verified scores are used for draw weightings and coaching.
-            </p>
+          <div className="p-8 bg-primary/5 rounded-[2.5rem] flex items-start gap-6 border border-primary/5">
+            <Info size={24} className="text-primary mt-1 shrink-0" />
+            <div className="space-y-1">
+               <p className="text-[11px] font-black text-primary/80 uppercase tracking-widest leading-relaxed">
+                 Express Verification: 5-round rolling retention enforced for competitive integrity.
+               </p>
+               <p className="text-[9px] font-black text-accent uppercase tracking-[0.4em]">SYSTEM PROTOCOL v2.0</p>
+            </div>
           </div>
         </div>
 
-        <div className="lg:col-span-2 space-y-10">
-          <Card className="glass-card rounded-[3rem] overflow-hidden flex flex-col min-h-[500px]">
-            <CardHeader className="p-8 border-b border-white/40 bg-white/20">
+        <div className="lg:col-span-2 space-y-12">
+          <Card className="glass-card rounded-[4rem] overflow-hidden flex flex-col min-h-[600px]">
+            <CardHeader className="p-12 border-b border-secondary bg-primary/5">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-primary rounded-2xl text-white shadow-lg"><History size={24} /></div>
-                  <div>
-                    <CardTitle className="text-2xl font-bold text-primary">Score History</CardTitle>
-                    <CardDescription className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Recent verified rounds</CardDescription>
+                <div className="flex items-center gap-6">
+                  <div className="p-4 bg-primary rounded-[1.5rem] text-white shadow-2xl shadow-primary/20"><History size={32} /></div>
+                  <div className="space-y-1">
+                    <CardTitle className="text-4xl font-black text-primary tracking-tighter">Score Logs</CardTitle>
+                    <CardDescription className="text-[10px] font-black uppercase tracking-[0.5em] text-muted-foreground">RECENT VERIFIED ROUNDS</CardDescription>
                   </div>
                 </div>
-                <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-none px-4 py-1.5 rounded-full font-black uppercase tracking-widest text-[10px]">Active Season</Badge>
+                <Badge className="bg-accent text-primary border-none px-6 py-2 rounded-full font-black uppercase tracking-widest text-[10px] shadow-lg shadow-accent/20">ACTIVE SEASON</Badge>
               </div>
             </CardHeader>
             <Table>
               <TableHeader>
-                <TableRow className="bg-transparent border-white/20">
-                  <TableHead className="px-8 font-black uppercase tracking-widest text-[10px]">Play Date</TableHead>
-                  <TableHead className="font-black uppercase tracking-widest text-[10px]">Verified Course</TableHead>
-                  <TableHead className="text-right px-8 font-black uppercase tracking-widest text-[10px]">Points</TableHead>
+                <TableRow className="bg-transparent border-secondary hover:bg-transparent">
+                  <TableHead className="px-12 h-16 font-black uppercase tracking-[0.4em] text-[10px]">Round Date</TableHead>
+                  <TableHead className="h-16 font-black uppercase tracking-[0.4em] text-[10px]">Verified Course</TableHead>
+                  <TableHead className="text-right px-12 h-16 font-black uppercase tracking-[0.4em] text-[10px]">Points</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {scores.map((s) => (
-                  <TableRow key={s.id} className="hover:bg-white/40 transition-all border-white/20 group">
-                    <TableCell className="px-8 py-6 font-bold text-primary/80">{format(s.date, "MMM dd, yyyy")}</TableCell>
-                    <TableCell className="font-bold text-foreground/80">{s.course}</TableCell>
-                    <TableCell className="text-right px-8">
-                      <div className="inline-flex items-center gap-2">
-                        <span className="text-2xl font-black text-primary tracking-tighter">{s.score}</span>
-                        <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-50">PTS</span>
+                  <TableRow key={s.id} className="hover:bg-primary/5 transition-all border-secondary group cursor-default">
+                    <TableCell className="px-12 py-10 font-black text-primary/60 text-lg tracking-tight">{format(s.date, "MMM dd, yyyy")}</TableCell>
+                    <TableCell className="font-black text-primary tracking-tight text-lg">{s.course}</TableCell>
+                    <TableCell className="text-right px-12">
+                      <div className="inline-flex items-center gap-3">
+                        <span className="text-5xl font-black text-primary tracking-tighter">{s.score}</span>
+                        <span className="text-[11px] font-black uppercase tracking-[0.3em] text-muted-foreground opacity-40">PTS</span>
                       </div>
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
-            <CardFooter className="mt-auto p-8 bg-white/10 flex justify-center border-t border-white/20">
-               <p className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.3em] italic">System-enforced 5-round rolling retention</p>
+            <CardFooter className="mt-auto p-12 bg-primary/5 flex justify-center border-t border-secondary">
+               <p className="text-[11px] text-muted-foreground font-black uppercase tracking-[0.6em] italic">GoCharity Rolling Verification Engine</p>
             </CardFooter>
           </Card>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="p-8 glass-card border-none bg-gradient-to-br from-primary to-primary/80 text-white rounded-[3rem] shadow-2xl shadow-primary/20 relative overflow-hidden group">
-               <Sparkles className="absolute bottom-[-20px] right-[-20px] w-40 h-40 opacity-10 group-hover:scale-110 transition-transform duration-700" />
-               <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-60 mb-2">Rolling Average</p>
-               <div className="flex items-baseline gap-2">
-                 <h3 className="text-5xl font-black tracking-tighter">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <Card className="p-12 glass-card border-none bg-primary text-white rounded-[4rem] shadow-2xl shadow-primary/30 relative overflow-hidden group">
+               <Sparkles className="absolute bottom-[-40px] right-[-40px] w-56 h-56 opacity-10 group-hover:scale-125 transition-transform duration-1000" />
+               <p className="text-[11px] font-black uppercase tracking-[0.4em] opacity-60 mb-3">ROLLING AVERAGE</p>
+               <div className="flex items-baseline gap-4 relative z-10">
+                 <h3 className="text-7xl font-black tracking-tighter">
                    {(scores.reduce((acc, curr) => acc + curr.score, 0) / (scores.length || 1)).toFixed(1)}
                  </h3>
-                 <span className="text-xs font-bold opacity-60">Verified</span>
+                 <span className="text-sm font-black uppercase tracking-widest opacity-60">Verified Index</span>
                </div>
             </Card>
-            <Card className="p-8 glass-card rounded-[3rem] relative overflow-hidden group">
-               <div className="absolute top-8 right-8 w-3 h-3 rounded-full bg-accent animate-pulse shadow-[0_0_15px_rgba(var(--accent),0.5)]" />
-               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-2">Eligibility Status</p>
-               <h3 className="text-4xl font-black text-primary tracking-tight">Active</h3>
-               <p className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest mt-2">Qualified for Monthly Draws</p>
+            <Card className="p-12 glass-card rounded-[4rem] relative overflow-hidden group">
+               <div className="absolute top-10 right-10 w-4 h-4 rounded-full bg-accent animate-pulse shadow-[0_0_30px_rgba(255,0,128,0.6)]" />
+               <p className="text-[11px] font-black uppercase tracking-[0.4em] text-muted-foreground mb-3">POOL STATUS</p>
+               <h3 className="text-6xl font-black text-primary tracking-tighter">Active</h3>
+               <p className="text-[11px] font-black text-primary/40 uppercase tracking-[0.3em] mt-3">QUALIFIED FOR MONTHLY DRAWS</p>
             </Card>
           </div>
         </div>
