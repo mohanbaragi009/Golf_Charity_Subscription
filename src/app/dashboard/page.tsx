@@ -43,7 +43,6 @@ export default function Dashboard() {
       })
       setAiAnalysis(result)
     } catch (error: any) {
-      console.error(error)
       const isBusy = error?.message?.includes('503') || error?.message?.includes('high demand') || error?.message?.includes('unavailable');
       toast({
         variant: "destructive",
@@ -66,7 +65,7 @@ export default function Dashboard() {
       <div className="space-y-16">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
           <div className="space-y-3">
-            <h1 className="text-6xl font-black text-primary tracking-tighter flex items-center gap-5">
+            <h1 className="text-4xl md:text-6xl font-black text-primary tracking-tighter flex items-center gap-5">
               Performance Hub <Zap className="text-accent fill-accent animate-pulse" size={40} />
             </h1>
             <div className="flex items-center gap-3">
@@ -83,22 +82,22 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
           {[
             { icon: Trophy, label: "Current handicap", value: "14.5", sub: "-0.4 Last Week", color: "primary" },
             { icon: Target, label: "Express Index", value: "36.4", sub: "Avg Top 5 Rounds", color: "primary" },
             { icon: Zap, label: "Active Entries", value: "12", sub: "Pool Eligibility: YES", color: "accent" },
           ].map((stat, i) => (
-            <Card key={i} className="glass-card overflow-hidden hover:scale-105 transition-all group border-2 border-transparent hover:border-primary/10">
-              <CardContent className="p-12 space-y-8">
+            <Card key={i} className="glass-card overflow-hidden hover:scale-[1.02] transition-all group border-2 border-transparent hover:border-primary/10">
+              <CardContent className="p-8 sm:p-12 space-y-6 sm:space-y-8">
                 <div className={cn("p-4 rounded-[1.5rem] w-fit shadow-lg", stat.color === 'accent' ? 'bg-accent/10 text-accent' : 'bg-primary/10 text-primary')}>
                   <stat.icon size={28} className={stat.color === 'accent' ? 'fill-accent' : ''} />
                 </div>
                 <div className="space-y-1">
-                  <p className="text-[11px] font-black uppercase tracking-[0.3em] text-muted-foreground opacity-50">{stat.label}</p>
-                  <h3 className={cn("text-6xl font-black tracking-tighter", stat.color === 'accent' ? 'text-accent' : 'text-primary')}>{stat.value}</h3>
+                  <p className="text-[11px] font-black uppercase tracking-[0.3em] text-muted-foreground opacity-50 break-words leading-tight">{stat.label}</p>
+                  <h3 className={cn("text-4xl sm:text-5xl xl:text-6xl font-black tracking-tighter truncate", stat.color === 'accent' ? 'text-accent' : 'text-primary')}>{stat.value}</h3>
                 </div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-primary/60">{stat.sub}</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-primary/60 truncate">{stat.sub}</p>
               </CardContent>
             </Card>
           ))}
@@ -145,7 +144,7 @@ export default function Dashboard() {
           <Card className="glass-card overflow-hidden flex flex-col bg-primary/5 border-none">
             <CardHeader className="bg-primary text-white p-12 relative overflow-hidden">
                <Zap className="absolute top-[-40px] right-[-40px] w-64 h-64 opacity-10" />
-               <div className="flex items-center justify-between relative z-10">
+               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative z-10">
                   <div className="space-y-2">
                     <CardTitle className="text-4xl font-black tracking-tighter">GoCharity AI</CardTitle>
                     <p className="text-[11px] font-black uppercase tracking-[0.5em] text-white/60">EXPRESS INTELLIGENCE ENGINE</p>

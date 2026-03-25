@@ -135,7 +135,6 @@ export default function AdminPortal() {
         description: `Successfully processed draw for ${result.winners.length} recipients.`,
       })
     } catch (error: any) {
-      console.error(error)
       const isBusy = error?.message?.includes('503') || error?.message?.includes('high demand') || error?.message?.includes('unavailable');
       toast({
         variant: "destructive",
@@ -182,26 +181,30 @@ export default function AdminPortal() {
           </TabsList>
 
           <TabsContent value="overview">
-             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
                 {[
                   { icon: Users, label: "Total Users", value: "1,240", sub: "+12% MoM" },
                   { icon: DollarSign, label: "Prize Pool", value: "$45,200", sub: "Ready for Draw" },
                   { icon: Heart, label: "Charity Impact", value: "$124,500", sub: "Global Reach" },
                   { icon: TrendingUp, label: "Draw Volume", value: "842", sub: "Active entries" },
                 ].map((stat, i) => (
-                  <Card key={i} className="glass-card rounded-[2.5rem] p-8 space-y-2 hover:scale-[1.02] transition-transform group">
-                    <div className="p-3 bg-primary/5 rounded-xl w-fit group-hover:bg-primary group-hover:text-white transition-all">
-                      <stat.icon size={20} />
+                  <Card key={i} className="glass-card rounded-[2.5rem] p-6 space-y-3 hover:scale-[1.02] transition-transform group flex flex-col justify-between overflow-hidden">
+                    <div className="space-y-3">
+                      <div className="p-3 bg-primary/5 rounded-xl w-fit group-hover:bg-primary group-hover:text-white transition-all">
+                        <stat.icon size={18} />
+                      </div>
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-50 leading-tight break-words">{stat.label}</p>
                     </div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-50">{stat.label}</p>
-                    <h3 className="text-3xl font-black text-primary tracking-tighter">{stat.value}</h3>
-                    <p className="text-[9px] font-black text-primary/80 uppercase tracking-widest">{stat.sub}</p>
+                    <div className="space-y-1">
+                      <h3 className="text-2xl sm:text-3xl font-black text-primary tracking-tighter truncate">{stat.value}</h3>
+                      <p className="text-[9px] font-black text-primary/80 uppercase tracking-widest leading-none truncate">{stat.sub}</p>
+                    </div>
                   </Card>
                 ))}
              </div>
 
              <Card className="glass-card rounded-[3.5rem] p-10">
-                <div className="flex items-center justify-between mb-10">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-10">
                    <div>
                       <h3 className="text-2xl font-black text-primary tracking-tight">Growth & Impact Trends</h3>
                       <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-60">Aggregated platform analytics</p>
@@ -329,11 +332,11 @@ export default function AdminPortal() {
                      )}
                      
                      <Card className="glass-card rounded-[4rem] overflow-hidden p-12">
-                        <div className="flex items-center gap-6 mb-12">
+                        <div className="flex flex-col md:flex-row items-center gap-6 mb-12">
                           <div className="bg-accent p-4 rounded-[1.5rem] text-primary shadow-lg shadow-accent/20">
                              <TrendingUp size={32} />
                           </div>
-                          <div className="flex-1 space-y-1">
+                          <div className="flex-1 space-y-1 text-center md:text-left">
                             <h3 className="text-3xl font-black text-primary tracking-tighter">Outcome Analysis</h3>
                             <p className="text-sm text-muted-foreground font-medium leading-relaxed">{winners.explanation}</p>
                           </div>
@@ -349,7 +352,7 @@ export default function AdminPortal() {
                                   <Badge className="bg-accent text-primary font-black uppercase tracking-widest text-[9px] px-3 py-1.5 rounded-lg">ID: {idx + 1}</Badge>
                                   {winner.matchType && <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-40">{winner.matchType}</span>}
                                 </div>
-                                <h5 className="text-4xl font-black mb-4 text-primary tracking-tighter">{winner.userId}</h5>
+                                <h5 className="text-4xl font-black mb-4 text-primary tracking-tighter truncate">{winner.userId}</h5>
                                 <p className="text-xs font-bold text-muted-foreground/70 leading-relaxed uppercase tracking-widest">
                                   {winner.justification}
                                 </p>
@@ -359,7 +362,7 @@ export default function AdminPortal() {
                         </div>
 
                         {!isSimulation && (
-                          <div className="mt-16 flex justify-end gap-6 pt-12 border-t border-white/40">
+                          <div className="mt-16 flex flex-col md:flex-row justify-end gap-6 pt-12 border-t border-white/40">
                              <Button variant="ghost" className="rounded-2xl px-10 h-16 font-black uppercase tracking-widest text-[10px]" onClick={() => setWinners(null)}>Cancel</Button>
                              <Button className="bg-primary text-white rounded-2xl px-16 h-16 font-black uppercase tracking-[0.2em] shadow-2xl shadow-primary/30">Publish Official Results <ArrowRight size={20} className="ml-3" /></Button>
                           </div>
@@ -384,7 +387,7 @@ export default function AdminPortal() {
                         {/* Vertical line */}
                         <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-primary/10 hidden md:block" />
                         
-                        <div className="space-y-20">
+                        <div className="space-y-20 px-6 sm:px-0">
                           {DRAW_WORKFLOW.map((item, idx) => (
                             <div key={idx} className={cn("relative flex items-center justify-center md:justify-start", item.align === "right" ? "md:justify-end" : "")}>
                               {/* Dot Icon */}
@@ -515,7 +518,7 @@ export default function AdminPortal() {
                     <p className="text-xs font-bold text-muted-foreground/60 leading-relaxed uppercase tracking-widest line-clamp-3">
                       Global distribution management for {c.toLowerCase()} impact projects across developed and emerging regions.
                     </p>
-                    <div className="flex gap-4 pt-4 relative z-10">
+                    <div className="flex flex-col sm:flex-row gap-4 pt-4 relative z-10">
                        <Button variant="outline" className="flex-1 rounded-2xl bg-white/40 border-white/60 font-black uppercase tracking-widest text-[10px] h-14">Edit Content</Button>
                        <Button variant="outline" className="flex-1 rounded-2xl bg-white/40 border-white/60 font-black uppercase tracking-widest text-[10px] h-14">Audit Logs</Button>
                     </div>
