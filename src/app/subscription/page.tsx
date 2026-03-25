@@ -5,7 +5,7 @@ import { AppLayout } from "@/components/layout/AppLayout"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Check, Trophy, Heart, Gift, CreditCard, Star, Timer, ShieldCheck, Sparkles, Zap, MessageSquare, ClipboardCheck, FileText, UserCheck } from "lucide-react"
+import { Check, CreditCard, Timer, ShieldCheck, Sparkles, Zap, MessageSquare, FileText, UserCheck } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
@@ -128,7 +128,7 @@ export default function Subscriptions() {
             <Card 
               key={plan.name} 
               className={cn(
-                "relative flex flex-col h-full overflow-hidden border-2 transition-all duration-700 rounded-[3.5rem] group",
+                "relative flex flex-col h-full overflow-hidden border-2 transition-all duration-700 rounded-t-[3.5rem] rounded-b-[6rem] group",
                 plan.popular 
                   ? "border-primary bg-white/60 backdrop-blur-xl shadow-2xl shadow-primary/10 scale-105 z-10" 
                   : "border-white/40 bg-white/30 backdrop-blur-lg shadow-xl hover:border-primary/20 hover:scale-[1.02]"
@@ -176,19 +176,26 @@ export default function Subscriptions() {
                   </ul>
                 </div>
               </CardContent>
-              <CardFooter className="pt-6 pb-12 px-10">
-                <Button 
-                  className={cn(
-                    "w-full h-16 rounded-[2rem] font-black uppercase tracking-[0.2em] text-sm transition-all duration-500",
-                    plan.name === currentPlan 
-                      ? "bg-muted text-muted-foreground/40 cursor-default" 
-                      : "bg-primary text-white hover:bg-primary/90 shadow-2xl shadow-primary/20 hover:scale-[1.03] active:scale-[0.97]"
+              <CardFooter className="flex justify-center pb-20 pt-10">
+                <div className="relative group/bull">
+                  <Button 
+                    className={cn(
+                      "w-36 h-36 rounded-full font-black uppercase tracking-[0.1em] text-[10px] transition-all duration-700 shadow-[0_20px_50px_rgba(0,0,0,0.15)] hover:shadow-[0_30px_60px_rgba(0,0,0,0.2)] hover:scale-110 active:scale-95 flex flex-col items-center justify-center text-center p-4",
+                      plan.name === currentPlan 
+                        ? "bg-muted/50 text-muted-foreground/30 cursor-default border-4 border-muted" 
+                        : "bg-primary text-white hover:bg-primary/90"
+                    )}
+                    onClick={() => handleSubscribe(plan.name)}
+                    disabled={plan.name === currentPlan}
+                  >
+                    <span className="max-w-[80px] leading-tight">
+                      {plan.name === currentPlan ? "ACTIVE MEMBERSHIP" : "UPGRADE PLAN"}
+                    </span>
+                  </Button>
+                  {plan.name !== currentPlan && (
+                    <div className="absolute -inset-2 rounded-full border border-primary/20 animate-pulse pointer-events-none group-hover/bull:scale-125 transition-transform duration-700" />
                   )}
-                  onClick={() => handleSubscribe(plan.name)}
-                  disabled={plan.name === currentPlan}
-                >
-                  {plan.name === currentPlan ? "Active Membership" : "Upgrade Plan"}
-                </Button>
+                </div>
               </CardFooter>
             </Card>
           ))}
