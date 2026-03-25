@@ -31,11 +31,16 @@ const INITIAL_SCORES: GolfScore[] = [
 
 export default function ScoreEntry() {
   const { toast } = useToast()
-  const [date, setDate] = React.useState<Date | undefined>(new Date())
+  const [date, setDate] = React.useState<Date | undefined>(undefined)
   const [score, setScore] = React.useState("")
   const [course, setCourse] = React.useState("")
   const [loading, setLoading] = React.useState(false)
   const [scores, setScores] = React.useState<GolfScore[]>(INITIAL_SCORES)
+
+  // Fix: Hydration-safe initial date
+  React.useEffect(() => {
+    setDate(new Date())
+  }, [])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
