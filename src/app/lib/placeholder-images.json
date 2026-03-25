@@ -1,0 +1,35 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "golf-hero",
+      "description": "A beautiful lush green golf course at sunrise",
+      "imageUrl": "https://picsum.photos/seed/golf1/1200/600",
+      "imageHint": "golf course"
+    },
+    {
+      "id": "charity-water",
+      "description": "Clean water initiative charity",
+      "imageUrl": "https://picsum.photos/seed/water/400/300",
+      "imageHint": "clean water"
+    },
+    {
+      "id": "charity-education",
+      "description": "Children learning in a classroom",
+      "imageUrl": "https://picsum.photos/seed/edu/400/300",
+      "imageHint": "education charity"
+    },
+    {
+      "id": "charity-nature",
+      "description": "Reforestation project",
+      "imageUrl": "https://picsum.photos/seed/nature/400/300",
+      "imageHint": "reforestation"
+    },
+    {
+      "id": "user-avatar",
+      "description": "User profile placeholder",
+      "imageUrl": "https://picsum.photos/seed/user/100/100",
+      "imageHint": "person portrait"
+    }
+  ]
+}
