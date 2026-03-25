@@ -1,35 +1,29 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 133 24% 95%;
+    --background: 133 24% 96%;
     --foreground: 136 68% 10%;
     --card: 0 0% 100%;
     --card-foreground: 136 68% 10%;
     --popover: 0 0% 100%;
     --popover-foreground: 136 68% 10%;
-    --primary: 136 68% 38%;
+    --primary: 136 68% 30%;
     --primary-foreground: 0 0% 100%;
     --secondary: 133 24% 90%;
     --secondary-foreground: 136 68% 20%;
-    --muted: 133 10% 85%;
-    --muted-foreground: 136 20% 40%;
-    --accent: 93 91% 58%;
+    --muted: 133 10% 90%;
+    --muted-foreground: 136 20% 45%;
+    --accent: 85 100% 50%;
     --accent-foreground: 136 68% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 136 20% 85%;
-    --input: 136 20% 85%;
-    --ring: 136 68% 38%;
-    --chart-1: 136 68% 38%;
-    --chart-2: 93 91% 58%;
-    --chart-3: 133 24% 45%;
-    --chart-4: 136 40% 60%;
-    --chart-5: 93 60% 75%;
-    --radius: 0.75rem;
+    --border: 136 20% 88%;
+    --input: 136 20% 88%;
+    --ring: 136 68% 30%;
+    --radius: 1.5rem;
   }
 }
 
@@ -38,9 +32,29 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-body;
+    @apply bg-background text-foreground font-body selection:bg-primary/20;
+    background-image: 
+      radial-gradient(at 0% 0%, hsla(136, 68%, 30%, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(85, 100%, 50%, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, hsla(136, 68%, 30%, 0.05) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, hsla(85, 100%, 50%, 0.05) 0px, transparent 50%);
+    background-attachment: fixed;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-headline tracking-tight;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/40 backdrop-blur-xl border border-white/40 shadow-2xl shadow-black/5;
+  }
+  
+  .glass-panel {
+    @apply bg-white/60 backdrop-blur-2xl border border-white/60 shadow-lg;
+  }
+
+  .glass-button {
+    @apply bg-white/20 backdrop-blur-sm border border-white/40 hover:bg-white/40 transition-all duration-300;
   }
 }
