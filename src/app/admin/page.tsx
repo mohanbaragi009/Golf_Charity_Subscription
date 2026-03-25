@@ -24,7 +24,11 @@ import {
   Edit2,
   Trash2,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Play,
+  ClipboardList,
+  CheckSquare,
+  UploadCloud
 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -45,6 +49,8 @@ import {
   Cell
 } from 'recharts'
 import { useToast } from "@/hooks/use-toast"
+import { cn } from "@/lib/utils"
+import { motion } from "framer-motion"
 
 const MOCK_USERS = [
   { id: "usr_1", name: "Alice Johnson", email: "alice@example.com", score: 85, handicap: 12.0, status: "Active", plan: "Pro Eagle" },
@@ -61,6 +67,41 @@ const STATS_DATA = [
   { name: 'Apr', total: 2780 },
   { name: 'May', total: 1890 },
   { name: 'Jun', total: 2390 },
+]
+
+const DRAW_WORKFLOW = [
+  {
+    step: 1,
+    title: "Configuration",
+    description: "Define prize parameters, entry weighting, and select the draw type from 3-number to 5-number matching logic.",
+    icon: ClipboardList,
+    tags: ["Param Setup", "Prize Definition", "Logic Check"],
+    align: "left"
+  },
+  {
+    step: 2,
+    title: "Simulation & Audit",
+    description: "Run AI-powered simulations to verify weighting accuracy and ensure compliance with governance protocols.",
+    icon: Eye,
+    tags: ["Risk Analysis", "Governance", "Mock Run"],
+    align: "right"
+  },
+  {
+    step: 3,
+    title: "Execution",
+    description: "Finalize the official draw. The system picks winners and generates justifications based on performance data.",
+    icon: Play,
+    tags: ["Official Draw", "Live Result", "AI Selection"],
+    align: "left"
+  },
+  {
+    step: 4,
+    title: "Publication",
+    description: "Announce winners to the community and initiate prize fulfillment procedures through our verified logistics.",
+    icon: UploadCloud,
+    tags: ["Community Blast", "Fulfillment", "Audit Logs"],
+    align: "right"
+  }
 ]
 
 export default function AdminPortal() {
@@ -93,12 +134,15 @@ export default function AdminPortal() {
         title: isSimulation ? "Analysis Ready" : "Winners Selected!",
         description: `Successfully processed draw for ${result.winners.length} recipients.`,
       })
-    } catch (error) {
+    } catch (error: any) {
       console.error(error)
+      const isBusy = error?.message?.includes('503') || error?.message?.includes('high demand') || error?.message?.includes('unavailable');
       toast({
         variant: "destructive",
-        title: "Draw Error",
-        description: "The AI agent was unable to finalize the selection.",
+        title: isBusy ? "AI Service Busy" : "Draw Error",
+        description: isBusy 
+          ? "Our AI draw engine is currently experiencing high demand. Please try again in a moment."
+          : "The AI agent was unable to finalize the selection.",
       })
     } finally {
       setLoading(false)
@@ -328,14 +372,66 @@ export default function AdminPortal() {
                      </Card>
                   </div>
                 ) : (
-                  <div className="h-full min-h-[600px] flex flex-col items-center justify-center glass-card border-dashed rounded-[4rem] p-20 text-center bg-white/20">
-                    <div className="w-28 h-28 rounded-[3rem] bg-white/40 flex items-center justify-center text-primary/10 mb-10 border border-white/60 shadow-inner">
-                      <Dices size={56} />
+                  <div className="h-full flex flex-col space-y-12">
+                    {/* Draw Workflow Timeline - Step by step pattern */}
+                    <div className="relative pt-10">
+                      <div className="text-center mb-16">
+                         <h3 className="text-2xl font-black text-primary tracking-tight">System Workflow</h3>
+                         <p className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground opacity-40">Operational Protocol</p>
+                      </div>
+                      
+                      <div className="relative max-w-4xl mx-auto">
+                        {/* Vertical line */}
+                        <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-primary/10 hidden md:block" />
+                        
+                        <div className="space-y-20">
+                          {DRAW_WORKFLOW.map((item, idx) => (
+                            <div key={idx} className={cn("relative flex items-center justify-center md:justify-start", item.align === "right" ? "md:justify-end" : "")}>
+                              {/* Dot Icon */}
+                              <div className="absolute left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white border-2 border-primary/20 flex items-center justify-center z-10 hidden md:flex shadow-lg">
+                                <item.icon size={16} className="text-primary" />
+                              </div>
+
+                              {/* Workflow Card */}
+                              <motion.div 
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                className={cn(
+                                  "w-full md:w-[42%] glass-card rounded-[2.5rem] p-8 space-y-4 hover:scale-[1.02] transition-transform group",
+                                  item.align === "left" ? "md:mr-auto" : "md:ml-auto"
+                                )}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <h4 className="font-black text-lg text-primary tracking-tight">{item.title}</h4>
+                                  <Badge className="bg-primary/5 text-primary border-none text-[8px] font-black px-2 py-0.5 rounded-md">STEP {item.step}</Badge>
+                                </div>
+                                <p className="text-xs font-medium text-muted-foreground leading-relaxed">
+                                  {item.description}
+                                </p>
+                                <div className="flex flex-wrap gap-2 pt-2">
+                                  {item.tags.map((tag, tIdx) => (
+                                    <div key={tIdx} className="px-2 py-1 rounded-lg border border-primary/10 bg-white/40 text-[8px] font-black uppercase tracking-widest text-primary/40 group-hover:text-primary transition-colors">
+                                      {tag}
+                                    </div>
+                                  ))}
+                                </div>
+                              </motion.div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
-                    <h3 className="text-3xl font-black text-primary/30 tracking-tight">Draw Engine Standby</h3>
-                    <p className="max-w-md mx-auto mt-6 text-sm font-bold text-muted-foreground/40 uppercase tracking-widest leading-loose">
-                      Select selection logic and run a simulation to preview potential winners before finalizing the official monthly draw.
-                    </p>
+
+                    <div className="h-full min-h-[300px] flex flex-col items-center justify-center glass-card border-dashed rounded-[4rem] p-10 text-center bg-white/20">
+                      <div className="w-20 h-20 rounded-[2.5rem] bg-white/40 flex items-center justify-center text-primary/10 mb-8 border border-white/60 shadow-inner">
+                        <Dices size={40} />
+                      </div>
+                      <h3 className="text-2xl font-black text-primary/30 tracking-tight">Draw Engine Standby</h3>
+                      <p className="max-w-md mx-auto mt-4 text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest leading-loose">
+                        Configure logic and run a simulation to begin.
+                      </p>
+                    </div>
                   </div>
                 )}
               </div>

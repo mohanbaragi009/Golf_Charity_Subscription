@@ -5,10 +5,11 @@ import { AppLayout } from "@/components/layout/AppLayout"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Check, Trophy, Heart, Gift, CreditCard, Star, Timer, ShieldCheck, Sparkles } from "lucide-react"
+import { Check, Trophy, Heart, Gift, CreditCard, Star, Timer, ShieldCheck, Sparkles, Zap, MessageSquare, ClipboardCheck, FileText, UserCheck } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
+import { motion } from "framer-motion"
 
 const PLANS = [
   {
@@ -52,6 +53,41 @@ const PLANS = [
   }
 ]
 
+const LIFECYCLE_STEPS = [
+  {
+    step: 1,
+    title: "Onboarding & Selection",
+    description: "Choose your membership tier and designate your primary charity foundation. Your vision drives our collective impact.",
+    icon: MessageSquare,
+    tags: ["Plan Selection", "Charity Setup", "Identity Link"],
+    align: "left"
+  },
+  {
+    step: 2,
+    title: "Score Verification",
+    description: "Submit your Stableford scores through our verified registry. Our AI engine validates every round to ensure fair play.",
+    icon: FileText,
+    tags: ["AI Validation", "Handicap Check", "Data Integrity"],
+    align: "right"
+  },
+  {
+    step: 3,
+    title: "Monthly Draw Engine",
+    description: "Automatic entry into our premium draws. Winners are selected using transparent algorithmic strategies.",
+    icon: Zap,
+    tags: ["Automatic Entry", "Weighting", "Prize Payout"],
+    align: "left"
+  },
+  {
+    step: 4,
+    title: "Verified Impact",
+    description: "Receive your quarterly impact report. See exactly how your subscription funded clean water or education projects.",
+    icon: UserCheck,
+    tags: ["Social Impact", "NGO Verified", "Global Reach"],
+    align: "right"
+  }
+]
+
 export default function Subscriptions() {
   const { toast } = useToast()
   const [currentPlan, setCurrentPlan] = React.useState("Pro Eagle")
@@ -67,7 +103,7 @@ export default function Subscriptions() {
 
   return (
     <AppLayout>
-      <div className="space-y-16">
+      <div className="space-y-24 pb-20">
         <div className="text-center max-w-3xl mx-auto space-y-6">
           <Badge className="bg-primary/5 text-primary border-primary/20 px-6 py-2 rounded-full font-black uppercase tracking-[0.3em] text-[10px] mb-4">Membership Access</Badge>
           <h1 className="text-5xl font-bold text-primary tracking-tighter">Premium Membership</h1>
@@ -156,6 +192,57 @@ export default function Subscriptions() {
               </CardFooter>
             </Card>
           ))}
+        </div>
+
+        {/* Lifecycle Path Section - Step by Step design */}
+        <div className="relative pt-20">
+          <div className="text-center mb-20">
+            <h2 className="text-3xl font-black text-primary tracking-tighter uppercase">Member Journey</h2>
+            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground opacity-40">System Lifecycle Protocol</p>
+          </div>
+
+          <div className="max-w-6xl mx-auto relative">
+            {/* Timeline Line */}
+            <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-primary/10 -translate-x-1/2 hidden md:block" />
+
+            <div className="space-y-24">
+              {LIFECYCLE_STEPS.map((step, idx) => (
+                <div key={idx} className={cn("relative flex items-center justify-center md:justify-start", step.align === "right" ? "md:justify-end" : "")}>
+                  {/* Timeline Dot */}
+                  <div className="absolute left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-white border-2 border-primary/20 flex items-center justify-center z-10 hidden md:flex shadow-xl shadow-primary/5">
+                    <step.icon size={20} className="text-primary" />
+                    <div className="absolute inset-0 rounded-full bg-primary/5 animate-ping opacity-20" />
+                  </div>
+
+                  {/* Card content */}
+                  <motion.div 
+                    initial={{ opacity: 0, x: step.align === "left" ? -40 : 40 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    className={cn(
+                      "w-full md:w-[45%] glass-card rounded-[3rem] p-10 space-y-6 relative overflow-hidden group",
+                      step.align === "left" ? "md:mr-auto" : "md:ml-auto"
+                    )}
+                  >
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-2xl font-black text-primary tracking-tighter">{step.title}</h3>
+                      <Badge className="bg-primary/5 text-primary border-none text-[9px] font-black px-3 py-1 rounded-lg">STEP {step.step}</Badge>
+                    </div>
+                    <p className="text-sm font-medium text-muted-foreground leading-relaxed">
+                      {step.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2 pt-4">
+                      {step.tags.map((tag, tIdx) => (
+                        <div key={tIdx} className="px-3 py-1.5 rounded-xl border border-primary/10 bg-white/40 text-[9px] font-black uppercase tracking-widest text-primary/60 hover:bg-primary/5 transition-colors cursor-default">
+                          {tag}
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="bg-white/40 backdrop-blur-2xl rounded-[4rem] p-16 shadow-2xl border border-white/60 grid grid-cols-1 md:grid-cols-3 gap-16 relative overflow-hidden">
