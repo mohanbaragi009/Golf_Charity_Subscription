@@ -78,7 +78,26 @@ const analyzeGolfPerformanceFlow = ai.defineFlow(
     outputSchema: AnalyzeGolfPerformanceOutputSchema,
   },
   async (input) => {
-    const {output} = await prompt(input);
-    return output!;
+    let attempts = 0;
+    const maxAttempts = 3;
+    
+    while (attempts < maxAttempts) {
+      try {
+        const {output} = await prompt(input);
+        if (!output) throw new Error('No output returned from AI');
+        return output;
+      } catch (error: any) {
+        attempts++;
+        const isTransient = error?.message?.includes('503') || error?.message?.includes('high demand');
+        
+        if (attempts >= maxAttempts || !isTransient) {
+          throw error;
+        }
+        
+        // Exponential backoff
+        await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempts)));
+      }
+    }
+    throw new Error('AI service unavailable after retries');
   }
 );

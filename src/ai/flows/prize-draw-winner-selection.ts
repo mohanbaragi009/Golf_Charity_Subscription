@@ -73,13 +73,30 @@ const prizeDrawWinnerSelectionFlow = ai.defineFlow(
     outputSchema: PrizeDrawWinnerSelectionOutputSchema,
   },
   async (input) => {
-    const {output} = await prizeDrawWinnerSelectionPrompt(input);
-    if (!output) {
-        throw new Error('No output received from the prompt.');
+    let attempts = 0;
+    const maxAttempts = 3;
+
+    while (attempts < maxAttempts) {
+      try {
+        const {output} = await prizeDrawWinnerSelectionPrompt(input);
+        if (!output) throw new Error('No output received from the prompt.');
+        
+        const finalOutput = { ...output };
+        if (input.isSimulation) {
+          finalOutput.simulationNote = "This draw was performed in SIMULATION MODE. Results are not official and have not been published.";
+        }
+        return finalOutput;
+      } catch (error: any) {
+        attempts++;
+        const isTransient = error?.message?.includes('503') || error?.message?.includes('high demand');
+
+        if (attempts >= maxAttempts || !isTransient) {
+          throw error;
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempts)));
+      }
     }
-    if (input.isSimulation) {
-      output.simulationNote = "This draw was performed in SIMULATION MODE. Results are not official and have not been published.";
-    }
-    return output;
+    throw new Error('AI service unavailable after retries');
   }
 );

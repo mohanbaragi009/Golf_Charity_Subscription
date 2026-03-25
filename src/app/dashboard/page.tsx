@@ -16,6 +16,7 @@ import {
 import { analyzeGolfPerformance, type AnalyzeGolfPerformanceOutput } from "@/ai/flows/personalized-golf-performance-analysis-flow"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { useToast } from "@/hooks/use-toast"
 
 const MOCK_DATA = [
   { name: 'Jan', score: 32 },
@@ -27,6 +28,7 @@ const MOCK_DATA = [
 ]
 
 export default function Dashboard() {
+  const { toast } = useToast()
   const [aiAnalysis, setAiAnalysis] = React.useState<AnalyzeGolfPerformanceOutput | null>(null)
   const [loading, setLoading] = React.useState(false)
 
@@ -39,8 +41,16 @@ export default function Dashboard() {
         recentCourseConditions: "Moderate winds, dry greens"
       })
       setAiAnalysis(result)
-    } catch (error) {
+    } catch (error: any) {
       console.error(error)
+      const isBusy = error?.message?.includes('503') || error?.message?.includes('high demand') || error?.message?.includes('unavailable');
+      toast({
+        variant: "destructive",
+        title: isBusy ? "AI Service Busy" : "Analysis Error",
+        description: isBusy 
+          ? "Our AI coaching engine is currently experiencing high demand. Please try again in a moment."
+          : "We couldn't retrieve your personalized coaching insights right now.",
+      })
     } finally {
       setLoading(false)
     }
