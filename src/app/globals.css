@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -39,6 +40,7 @@
       radial-gradient(at 100% 100%, hsla(136, 68%, 30%, 0.05) 0px, transparent 50%),
       radial-gradient(at 0% 100%, hsla(85, 100%, 50%, 0.05) 0px, transparent 50%);
     background-attachment: fixed;
+    overflow-x: hidden;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-headline tracking-tight;
@@ -57,4 +59,19 @@
   .glass-button {
     @apply bg-white/20 backdrop-blur-sm border border-white/40 hover:bg-white/40 transition-all duration-300;
   }
+
+  .magic-orb {
+    @apply absolute rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float pointer-events-none;
+  }
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+.animate-float {
+  animation: float 12s infinite ease-in-out;
 }
