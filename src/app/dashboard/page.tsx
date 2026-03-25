@@ -144,7 +144,7 @@ export default function Dashboard() {
                <div className="flex items-center justify-between relative z-10">
                   <div className="space-y-1">
                     <CardTitle className="text-3xl font-black tracking-tight">AI Express Coach</CardTitle>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-white/60">Powered by Zepto Intelligence</p>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-white/60">Powered by GoCharity Intelligence</p>
                   </div>
                   <Button variant="outline" size="sm" onClick={fetchAnalysis} disabled={loading} className="rounded-full bg-white/10 border-white/20 hover:bg-white text-white hover:text-primary font-black uppercase tracking-widest text-[9px] px-6 h-10">
                     {loading ? "Analyzing..." : "Refresh"}

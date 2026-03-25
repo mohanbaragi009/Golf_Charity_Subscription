@@ -24,8 +24,8 @@ export default function LandingPage() {
             <Zap size={28} className="fill-white" />
           </div>
           <div className="flex flex-col">
-            <span className="text-3xl font-black text-primary leading-none tracking-tighter">ZEPTO</span>
-            <span className="text-[10px] font-black text-accent uppercase tracking-[0.3em]">IMPACT</span>
+            <span className="text-3xl font-black text-primary leading-none tracking-tighter">GO</span>
+            <span className="text-[10px] font-black text-accent uppercase tracking-[0.3em]">CHARITY</span>
           </div>
         </Link>
         <div className="flex items-center gap-4">
@@ -118,7 +118,7 @@ export default function LandingPage() {
       <footer className="container mx-auto px-6 py-12 border-t border-secondary mt-20 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex items-center gap-2">
            <Zap size={20} className="text-primary fill-primary" />
-           <span className="text-[10px] font-black uppercase tracking-widest text-primary">ZEPTO IMPACT ENGINE v2.0</span>
+           <span className="text-[10px] font-black uppercase tracking-widest text-primary">GOCHARITY IMPACT ENGINE v2.0</span>
         </div>
         <div className="flex gap-8">
           {["Privacy", "Terms", "Support"].map(l => (

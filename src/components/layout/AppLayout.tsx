@@ -83,8 +83,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 <Zap size={24} className="fill-white" />
               </motion.div>
               <div className="flex flex-col">
-                <span className="text-3xl font-black text-primary leading-none tracking-tighter">ZEPTO</span>
-                <span className="text-[10px] font-black text-accent uppercase tracking-[0.3em]">IMPACT</span>
+                <span className="text-3xl font-black text-primary leading-none tracking-tighter">GO</span>
+                <span className="text-[10px] font-black text-accent uppercase tracking-[0.3em]">CHARITY</span>
               </div>
             </Link>
           </SidebarHeader>
