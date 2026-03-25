@@ -1,8 +1,9 @@
+
 "use client"
 
 import * as React from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { 
   Trophy, 
   LayoutDashboard, 
@@ -12,7 +13,9 @@ import {
   ShieldCheck,
   ChevronRight,
   Sparkles,
-  Zap
+  Zap,
+  LogOut,
+  User
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -28,6 +31,10 @@ import {
   SidebarTrigger
 } from "@/components/ui/sidebar"
 import { motion, AnimatePresence } from "framer-motion"
+import { useUser } from "@/firebase"
+import { getAuth, signOut } from "firebase/auth"
+import { getFirebaseApp } from "@/firebase"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 const NAV_ITEMS = [
   { icon: LayoutDashboard, label: "Overview", href: "/dashboard" },
@@ -39,6 +46,8 @@ const NAV_ITEMS = [
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
+  const router = useRouter()
+  const { user } = useUser()
   const [pixels, setPixels] = React.useState<{id: number, top: string, left: string, delay: string}[]>([])
 
   React.useEffect(() => {
@@ -50,6 +59,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     }))
     setPixels(newPixels)
   }, [])
+
+  const handleSignOut = async () => {
+    const auth = getAuth(getFirebaseApp())
+    await signOut(auth)
+    router.push("/")
+  }
 
   return (
     <SidebarProvider>
@@ -96,7 +111,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     asChild 
                     isActive={pathname === item.href}
                     className={cn(
-                      "group relative rounded-[1.5rem] px-6 py-8 transition-all duration-400 border-2 border-transparent",
+                      "group relative rounded-[1.5rem] px-6 py-8 h-auto transition-all duration-400 border-2 border-transparent",
                       pathname === item.href 
                         ? "bg-primary text-white shadow-xl shadow-primary/20" 
                         : "text-muted-foreground hover:bg-secondary"
@@ -127,18 +142,51 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </motion.div>
           </SidebarContent>
           <SidebarFooter className="p-8 border-t border-secondary">
-            <div className="p-4 rounded-[1.5rem] bg-secondary flex items-center gap-4 group cursor-pointer hover:bg-white transition-all">
-              <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center font-black text-white text-lg">JS</div>
-              <div className="flex flex-col">
-                <span className="text-sm font-black text-primary tracking-tight">John Smith</span>
-                <span className="text-[9px] text-accent font-black uppercase tracking-widest">Elite Albatross</span>
+            {user ? (
+              <div className="flex flex-col gap-4">
+                <div className="p-4 rounded-[1.5rem] bg-secondary flex items-center gap-4 group transition-all">
+                  <Avatar className="w-12 h-12 rounded-xl shadow-lg shadow-primary/20 border border-white">
+                    <AvatarImage src={user.photoURL || ""} />
+                    <AvatarFallback className="bg-primary text-white font-black text-lg">
+                      {user.displayName?.charAt(0) || user.email?.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-sm font-black text-primary tracking-tight truncate">
+                      {user.displayName || "User"}
+                    </span>
+                    <span className="text-[9px] text-accent font-black uppercase tracking-widest truncate">
+                      Elite Member
+                    </span>
+                  </div>
+                </div>
+                <Button 
+                  variant="ghost" 
+                  onClick={handleSignOut}
+                  className="w-full h-12 rounded-xl text-primary/40 hover:text-primary hover:bg-primary/5 font-black uppercase tracking-[0.2em] text-[9px]"
+                >
+                  <LogOut size={14} className="mr-2" /> Sign Out
+                </Button>
               </div>
-            </div>
+            ) : (
+              <Link href="/auth" className="w-full">
+                <Button className="w-full h-14 rounded-2xl bg-primary text-white font-black uppercase tracking-widest text-[10px] shadow-xl shadow-primary/20">
+                  <User size={16} className="mr-2" /> Sign In
+                </Button>
+              </Link>
+            )}
           </SidebarFooter>
         </Sidebar>
 
         <main className="flex-1 overflow-auto relative z-10">
-          <div className="max-w-7xl mx-auto p-8 md:p-12">
+          <div className="max-w-7xl mx-auto p-4 md:p-12">
+            <div className="md:hidden mb-6 flex justify-between items-center bg-white/60 backdrop-blur-xl p-4 rounded-3xl border border-secondary shadow-sm">
+               <Link href="/" className="flex items-center gap-2">
+                 <Zap size={20} className="text-primary fill-primary" />
+                 <span className="text-xl font-black text-primary tracking-tighter">GO</span>
+               </Link>
+               <SidebarTrigger />
+            </div>
             <AnimatePresence mode="wait">
               <motion.div
                 key={pathname}
