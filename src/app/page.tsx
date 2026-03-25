@@ -1,18 +1,47 @@
-
 "use client"
 
 import * as React from "react"
 import Link from "next/link"
-import { Trophy, Heart, Sparkles, Target, ArrowRight, ShieldCheck, TrendingUp, Gift } from "lucide-react"
+import { Trophy, Heart, Sparkles, Target, ArrowRight, Gift } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
 export default function LandingPage() {
+  const [pixels, setPixels] = React.useState<{id: number, top: string, left: string, delay: string}[]>([])
+
+  React.useEffect(() => {
+    const newPixels = Array.from({ length: 30 }).map((_, i) => ({
+      id: i,
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 8}s`
+    }))
+    setPixels(newPixels)
+  }, [])
+
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Background Decor */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[120px] pointer-events-none animate-pulse" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-accent/10 rounded-full blur-[120px] pointer-events-none animate-pulse" style={{ animationDelay: '2s' }} />
+    <div className="min-h-screen bg-white relative overflow-hidden">
+      {/* Design Elements: Glowing Particles and Streaks */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="light-streak top-[15%] right-[-5%] opacity-20" />
+        <div className="light-streak bottom-[20%] left-[-10%] opacity-15" />
+        
+        {pixels.map((pixel) => (
+          <div 
+            key={pixel.id}
+            className="pixel-particle"
+            style={{ 
+              top: pixel.top, 
+              left: pixel.left, 
+              animationDelay: pixel.delay,
+              backgroundColor: pixel.id % 2 === 0 ? 'hsl(var(--primary))' : 'hsl(var(--accent))'
+            }} 
+          />
+        ))}
+
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/5 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-accent/5 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '2s' }} />
+      </div>
 
       <header className="container mx-auto px-6 py-8 flex items-center justify-between relative z-10">
         <Link href="/" className="flex items-center gap-3 group">
@@ -26,7 +55,7 @@ export default function LandingPage() {
         </Link>
         <div className="flex items-center gap-4">
           <Link href="/dashboard">
-            <Button variant="ghost" className="font-bold text-primary hover:bg-white/40 rounded-xl px-6">Login</Button>
+            <Button variant="ghost" className="font-bold text-primary hover:bg-gray-50 rounded-xl px-6">Login</Button>
           </Link>
           <Link href="/subscription">
             <Button className="bg-primary text-white font-black uppercase tracking-widest rounded-xl px-8 shadow-xl shadow-primary/20 hover:scale-[1.05] transition-transform">
@@ -39,7 +68,7 @@ export default function LandingPage() {
       <main className="container mx-auto px-6 relative z-10">
         {/* Hero Section */}
         <section className="py-20 lg:py-32 flex flex-col items-center text-center space-y-10">
-          <Badge className="bg-accent/20 text-primary border-accent/40 px-6 py-2 rounded-full font-black uppercase tracking-[0.3em] text-[10px] animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <Badge className="bg-primary/5 text-primary border-primary/20 px-6 py-2 rounded-full font-black uppercase tracking-[0.3em] text-[10px] animate-in fade-in slide-in-from-bottom-4 duration-700">
             Beyond the Fairway
           </Badge>
           <h1 className="text-6xl md:text-8xl font-black text-primary tracking-tighter max-w-4xl leading-tight animate-in fade-in slide-in-from-bottom-8 duration-1000">
@@ -55,7 +84,7 @@ export default function LandingPage() {
               </Button>
             </Link>
             <Link href="/dashboard">
-              <Button size="lg" variant="outline" className="h-16 px-12 rounded-2xl border-white/60 bg-white/40 backdrop-blur-md font-bold text-primary hover:bg-white/60">
+              <Button size="lg" variant="outline" className="h-16 px-12 rounded-2xl border-gray-200 bg-white/40 backdrop-blur-md font-bold text-primary hover:bg-white/60">
                 Explore Dashboard
               </Button>
             </Link>
@@ -93,10 +122,10 @@ export default function LandingPage() {
 
         {/* Secondary CTA */}
         <section className="py-20">
-          <div className="bg-primary rounded-[4rem] p-12 md:p-24 relative overflow-hidden text-center space-y-8">
+          <div className="bg-primary rounded-[4rem] p-12 md:p-24 relative overflow-hidden text-center space-y-8 shadow-2xl shadow-primary/20">
             <Sparkles className="absolute top-[-20px] right-[-20px] w-64 h-64 opacity-5" />
             <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter max-w-2xl mx-auto">Ready to drive meaningful change?</h2>
-            <p className="text-white/60 text-lg font-medium max-w-xl mx-auto">Join a community of impact-driven golfers and start winning prizes while supporting the causes you care about.</p>
+            <p className="text-white/70 text-lg font-medium max-w-xl mx-auto">Join a community of impact-driven golfers and start winning prizes while supporting the causes you care about.</p>
             <Link href="/subscription" className="inline-block pt-6">
               <Button className="h-16 px-12 bg-accent text-primary font-black uppercase tracking-[0.2em] rounded-2xl shadow-2xl shadow-accent/20 hover:scale-[1.05] transition-all">
                 Join the Elite Albatross
@@ -106,7 +135,7 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <footer className="container mx-auto px-6 py-12 border-t border-white/20 mt-20 relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 opacity-60">
+      <footer className="container mx-auto px-6 py-12 border-t border-gray-100 mt-20 relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 opacity-60">
         <p className="text-[10px] font-black uppercase tracking-widest text-primary">© 2024 Golf Charity Platform. All Rights Reserved.</p>
         <div className="flex gap-8">
           <Link href="#" className="text-[10px] font-black uppercase tracking-widest text-primary hover:opacity-100 transition-opacity">Privacy Policy</Link>

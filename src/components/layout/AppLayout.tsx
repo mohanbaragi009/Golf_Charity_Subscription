@@ -38,16 +38,49 @@ const NAV_ITEMS = [
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
+  const [pixels, setPixels] = React.useState<{id: number, top: string, left: string, delay: string}[]>([])
+
+  React.useEffect(() => {
+    // Generate static pixel positions on client mount to avoid hydration issues
+    const newPixels = Array.from({ length: 40 }).map((_, i) => ({
+      id: i,
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 10}s`
+    }))
+    setPixels(newPixels)
+  }, [])
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full relative bg-background overflow-hidden">
-        {/* Dynamic Abstract Magic Orbs - Firebase Themed Glows */}
-        <div className="fixed top-[-10%] left-[-5%] w-[40vw] h-[40vw] bg-primary/10 rounded-full blur-[120px] pointer-events-none animate-float" style={{ animationDuration: '15s' }} />
-        <div className="fixed bottom-[-5%] right-[-10%] w-[35vw] h-[35vw] bg-accent/10 rounded-full blur-[120px] pointer-events-none animate-float" style={{ animationDuration: '18s', animationDelay: '-4s' }} />
-        <div className="fixed top-[20%] right-[10%] w-[20vw] h-[20vw] bg-primary/5 rounded-full blur-[100px] pointer-events-none animate-float" style={{ animationDuration: '20s', animationDelay: '-8s' }} />
+      <div className="flex min-h-screen w-full relative bg-white overflow-hidden">
+        {/* Design Elements: Light Streaks and Glowing Pixels */}
+        <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+          {/* Light Streaks */}
+          <div className="light-streak top-[10%] left-[-5%] opacity-40" />
+          <div className="light-streak top-[40%] right-[-10%] opacity-30" />
+          <div className="light-streak bottom-[10%] left-[20%] opacity-20" />
+          
+          {/* Glowing Pixels */}
+          {pixels.map((pixel) => (
+            <div 
+              key={pixel.id}
+              className="pixel-particle"
+              style={{ 
+                top: pixel.top, 
+                left: pixel.left, 
+                animationDelay: pixel.delay,
+                backgroundColor: pixel.id % 2 === 0 ? 'hsl(var(--primary))' : 'hsl(var(--accent))'
+              }} 
+            />
+          ))}
 
-        <Sidebar className="border-r border-white/20 bg-white/30 backdrop-blur-2xl">
+          {/* Soft Background Glows */}
+          <div className="absolute top-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-primary/5 rounded-full blur-[140px] animate-pulse" />
+          <div className="absolute bottom-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-accent/5 rounded-full blur-[140px] animate-pulse" style={{ animationDelay: '2s' }} />
+        </div>
+
+        <Sidebar className="border-r border-gray-100 bg-white/40 backdrop-blur-xl z-20">
           <SidebarHeader className="p-10">
             <Link href="/" className="flex items-center gap-4 group">
               <motion.div 
@@ -71,7 +104,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     asChild 
                     isActive={pathname === item.href}
                     className={cn(
-                      "group relative hover:bg-white/50 rounded-2xl px-6 py-8 transition-all duration-500",
+                      "group relative hover:bg-gray-50/80 rounded-2xl px-6 py-8 transition-all duration-500",
                       pathname === item.href 
                         ? "bg-primary text-white hover:bg-primary shadow-2xl shadow-primary/30" 
                         : "text-muted-foreground"
@@ -109,10 +142,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                </Link>
             </motion.div>
           </SidebarContent>
-          <SidebarFooter className="p-8 border-t border-white/10">
+          <SidebarFooter className="p-8 border-t border-gray-100">
             <motion.div 
               whileHover={{ scale: 1.02 }}
-              className="p-5 rounded-[2.5rem] bg-white/50 backdrop-blur-md border border-white/60 flex items-center gap-4 group cursor-pointer hover:bg-white/80 transition-all duration-500 shadow-sm"
+              className="p-5 rounded-[2.5rem] bg-gray-50/50 backdrop-blur-md border border-gray-100 flex items-center gap-4 group cursor-pointer hover:bg-white/80 transition-all duration-500 shadow-sm"
             >
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center font-black text-white shadow-xl text-xl">
                 JS
