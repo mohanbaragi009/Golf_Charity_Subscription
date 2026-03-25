@@ -4,27 +4,27 @@
 
 @layer base {
   :root {
-    /* Firebase Inspired Light Palette */
+    /* Zepto Inspired Palette */
     --background: 0 0% 100%;
-    --foreground: 210 40% 10%;
+    --foreground: 270 40% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 210 40% 10%;
+    --card-foreground: 270 40% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 210 40% 10%;
-    --primary: 30 100% 50%; /* Firebase Orange */
+    --popover-foreground: 270 40% 10%;
+    --primary: 275 90% 45%; /* Zepto Purple */
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 20% 95%;
-    --secondary-foreground: 210 40% 20%;
-    --muted: 210 10% 96%;
-    --muted-foreground: 210 20% 45%;
-    --accent: 45 100% 50%; /* Firebase Yellow */
-    --accent-foreground: 210 40% 10%;
+    --secondary: 275 20% 96%;
+    --secondary-foreground: 275 40% 20%;
+    --muted: 275 10% 96%;
+    --muted-foreground: 275 20% 45%;
+    --accent: 330 100% 55%; /* Zepto Pink/Magenta */
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 210 20% 90%;
-    --input: 210 20% 90%;
-    --ring: 30 100% 50%;
-    --radius: 1.5rem;
+    --border: 275 20% 92%;
+    --input: 275 20% 92%;
+    --ring: 275 90% 45%;
+    --radius: 2rem;
   }
 }
 
@@ -36,8 +36,8 @@
     @apply bg-background text-foreground font-body selection:bg-primary/20;
     background-color: #ffffff;
     background-image: 
-      radial-gradient(at 0% 0%, hsla(30, 100%, 50%, 0.03) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, hsla(45, 100%, 50%, 0.03) 0px, transparent 50%);
+      radial-gradient(at 0% 0%, hsla(275, 90%, 45%, 0.04) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, hsla(330, 100%, 55%, 0.04) 0px, transparent 50%);
     background-attachment: fixed;
     overflow-x: hidden;
   }
@@ -45,42 +45,26 @@
 
 @layer components {
   .glass-card {
-    @apply bg-white/70 backdrop-blur-xl border border-white/50 shadow-2xl shadow-black/[0.03];
+    @apply bg-white/80 backdrop-blur-xl border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-[2.5rem];
   }
   
-  .glass-panel {
-    @apply bg-white/80 backdrop-blur-2xl border border-white/60 shadow-lg;
+  .zepto-badge {
+    @apply bg-accent text-white font-black uppercase tracking-widest text-[9px] px-3 py-1.5 rounded-full shadow-lg shadow-accent/20;
   }
 
-  .glass-button {
-    @apply bg-white/40 backdrop-blur-sm border border-white/50 hover:bg-white/60 transition-all duration-300;
+  .zepto-button {
+    @apply bg-primary text-white font-black uppercase tracking-[0.1em] rounded-[1.5rem] shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300;
   }
 
-  /* Pixel Particle Design Elements */
   .pixel-particle {
-    @apply absolute w-1 h-1 bg-primary/20 rounded-sm pointer-events-none;
-    animation: pixel-float 10s infinite linear;
-  }
-
-  .light-streak {
-    @apply absolute w-[300px] h-[2px] bg-gradient-to-r from-transparent via-primary/10 to-transparent rotate-[-45deg] pointer-events-none;
+    @apply absolute w-1.5 h-1.5 bg-primary/30 rounded-full pointer-events-none;
+    animation: zepto-float 8s infinite ease-in-out;
   }
 }
 
-@keyframes pixel-float {
-  0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
-  10% { opacity: 0.8; }
-  90% { opacity: 0.8; }
-  100% { transform: translate(100px, -100px) rotate(360deg); opacity: 0; }
-}
-
-@keyframes float {
-  0% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -50px) scale(1.05); }
-  66% { transform: translate(-20px, 20px) scale(0.95); }
-  100% { transform: translate(0, 0) scale(1); }
-}
-
-.animate-float {
-  animation: float 15s infinite ease-in-out;
+@keyframes zepto-float {
+  0% { transform: translate(0, 0) scale(1); opacity: 0; }
+  20% { opacity: 0.6; }
+  80% { opacity: 0.6; }
+  100% { transform: translate(150px, -150px) scale(0.5); opacity: 0; }
 }

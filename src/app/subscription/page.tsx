@@ -5,7 +5,7 @@ import { AppLayout } from "@/components/layout/AppLayout"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Check, CreditCard, Timer, ShieldCheck, Sparkles, Zap, MessageSquare, FileText, UserCheck } from "lucide-react"
+import { Check, CreditCard, Timer, ShieldCheck, Sparkles, Zap, MessageSquare, FileText, UserCheck, ZapIcon } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
@@ -16,25 +16,25 @@ const PLANS = [
     name: "Basic Birdie",
     monthlyPrice: "9.99",
     yearlyPrice: "95.90",
-    description: "Ideal for casual golfers making their first mark on social impact.",
+    description: "Essential impact for casual players.",
     features: [
-      "1 Monthly Draw Entry",
-      "Core Performance Tracking",
-      "5% Charity Contribution",
-      "Standard Verification"
+      "1 Monthly Express Draw",
+      "Standard Verification",
+      "5% Direct Contribution",
+      "Live Performance Feed"
     ]
   },
   {
     name: "Pro Eagle",
     monthlyPrice: "24.99",
     yearlyPrice: "239.90",
-    description: "The gold standard for dedicated players seeking deep insights.",
+    description: "The most popular tier for active golfers.",
     features: [
-      "5 Monthly Draw Entries",
-      "Advanced AI Performance Engine",
-      "15% Charity Contribution",
-      "Priority Verification Queue",
-      "Exclusive Pro Badge"
+      "5 Express Draw Entries",
+      "10m AI Analysis Sync",
+      "15% Direct Contribution",
+      "Priority Queue Access",
+      "Verified Pro Badge"
     ],
     popular: true
   },
@@ -42,49 +42,14 @@ const PLANS = [
     name: "Elite Albatross",
     monthlyPrice: "49.99",
     yearlyPrice: "479.90",
-    description: "Ultimate access for those driving maximum impact and performance.",
+    description: "Ultimate speed and maximum impact.",
     features: [
-      "15 Monthly Draw Entries",
-      "High-Value VIP Draws",
-      "25% Charity Contribution",
-      "Unlimited AI Coaching",
-      "Custom Performance Apparel"
+      "20 Express Draw Entries",
+      "Instant AI Coaching",
+      "25% Direct Contribution",
+      "VIP Payout Expediting",
+      "Elite Performance Gear"
     ]
-  }
-]
-
-const LIFECYCLE_STEPS = [
-  {
-    step: 1,
-    title: "Onboarding & Selection",
-    description: "Choose your membership tier and designate your primary charity foundation. Your vision drives our collective impact.",
-    icon: MessageSquare,
-    tags: ["Plan Selection", "Charity Setup", "Identity Link"],
-    align: "left"
-  },
-  {
-    step: 2,
-    title: "Score Verification",
-    description: "Submit your Stableford scores through our verified registry. Our AI engine validates every round to ensure fair play.",
-    icon: FileText,
-    tags: ["AI Validation", "Handicap Check", "Data Integrity"],
-    align: "right"
-  },
-  {
-    step: 3,
-    title: "Monthly Draw Engine",
-    description: "Automatic entry into our premium draws. Winners are selected using transparent algorithmic strategies.",
-    icon: Zap,
-    tags: ["Automatic Entry", "Weighting", "Prize Payout"],
-    align: "left"
-  },
-  {
-    step: 4,
-    title: "Verified Impact",
-    description: "Receive your quarterly impact report. See exactly how your subscription funded clean water or education projects.",
-    icon: UserCheck,
-    tags: ["Social Impact", "NGO Verified", "Global Reach"],
-    align: "right"
   }
 ]
 
@@ -96,185 +61,108 @@ export default function Subscriptions() {
   const handleSubscribe = (name: string) => {
     setCurrentPlan(name)
     toast({
-      title: "Subscription Updated",
-      description: `Plan switched to ${name} (${billingCycle}). Welcome to the inner circle.`,
+      title: "Plan Activated!",
+      description: `${name} (${billingCycle}) is now live. Speed is yours.`,
     })
   }
 
   return (
     <AppLayout>
       <div className="space-y-24 pb-20">
-        <div className="text-center max-w-3xl mx-auto space-y-6">
-          <Badge className="bg-primary/5 text-primary border-primary/20 px-6 py-2 rounded-full font-black uppercase tracking-[0.3em] text-[10px] mb-4">Membership Access</Badge>
-          <h1 className="text-5xl font-bold text-primary tracking-tighter">Premium Membership</h1>
-          <p className="text-muted-foreground text-lg font-medium leading-relaxed">
-            Elevate your golfing experience while driving global change. Secure, verified, and high-impact.
+        <div className="text-center max-w-3xl mx-auto space-y-8">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/5 rounded-full">
+            <Zap size={14} className="text-accent fill-accent" />
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Exclusive Access</span>
+          </div>
+          <h1 className="text-6xl font-black text-primary tracking-tighter">Choose Your Speed</h1>
+          <p className="text-muted-foreground text-xl font-bold leading-relaxed">
+            Flexible membership tiers designed for high-frequency impact and performance.
           </p>
           
-          <div className="flex justify-center pt-8">
+          <div className="flex justify-center pt-6">
             <Tabs defaultValue="monthly" className="w-auto" onValueChange={(v) => setBillingCycle(v as any)}>
-              <TabsList className="bg-white/40 backdrop-blur-md p-1.5 rounded-[2rem] border border-white/60 shadow-xl h-16 inline-flex">
-                <TabsTrigger value="monthly" className="rounded-3xl px-12 h-full data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-xl font-bold transition-all">Monthly</TabsTrigger>
-                <TabsTrigger value="yearly" className="rounded-3xl px-12 h-full data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-xl font-bold transition-all flex items-center gap-2">
-                  Yearly <span className="text-[10px] font-black uppercase bg-accent text-primary px-2 py-0.5 rounded-md">-20%</span>
+              <TabsList className="bg-secondary p-1.5 rounded-full border border-primary/10 h-16 inline-flex">
+                <TabsTrigger value="monthly" className="rounded-full px-12 h-full data-[state=active]:bg-primary data-[state=active]:text-white font-black uppercase text-[10px] tracking-widest transition-all">Monthly</TabsTrigger>
+                <TabsTrigger value="yearly" className="rounded-full px-12 h-full data-[state=active]:bg-primary data-[state=active]:text-white font-black uppercase text-[10px] tracking-widest transition-all flex items-center gap-2">
+                  Yearly <span className="bg-accent text-white px-2 py-0.5 rounded-md text-[8px]">-20%</span>
                 </TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-stretch">
           {PLANS.map((plan) => (
             <Card 
               key={plan.name} 
               className={cn(
-                "relative flex flex-col h-full overflow-hidden border-2 transition-all duration-700 rounded-t-[3.5rem] rounded-b-[6rem] group",
+                "relative flex flex-col h-full border-none transition-all duration-500 rounded-[3.5rem] group overflow-hidden",
                 plan.popular 
-                  ? "border-primary bg-white/60 backdrop-blur-xl shadow-2xl shadow-primary/10 scale-105 z-10" 
-                  : "border-white/40 bg-white/30 backdrop-blur-lg shadow-xl hover:border-primary/20 hover:scale-[1.02]"
+                  ? "bg-primary text-white shadow-2xl shadow-primary/30 scale-105 z-10" 
+                  : "bg-white border-2 border-secondary shadow-xl hover:border-primary/20 hover:translate-y-[-10px]"
               )}
             >
-              {plan.popular && (
-                <div className="absolute top-0 right-0 left-0 bg-primary text-white text-center py-2.5 text-[9px] font-black uppercase tracking-[0.4em] shadow-lg">
-                  Curated Selection
-                </div>
-              )}
-              <CardHeader className={cn("p-10", plan.popular ? "pt-14" : "")}>
-                <div className="flex items-center justify-between mb-4">
-                  <Badge variant="secondary" className="bg-primary/5 text-primary border-none font-black uppercase tracking-widest text-[9px] px-3 py-1.5 rounded-lg">
+              <CardHeader className="p-10 space-y-6">
+                <div className="flex items-center justify-between">
+                  <Badge className={cn("rounded-full px-4 py-1.5 font-black uppercase text-[9px] border-none tracking-widest", plan.popular ? "bg-accent text-white" : "bg-primary/10 text-primary")}>
                     {plan.name}
                   </Badge>
-                  {plan.name === currentPlan && (
-                    <div className="flex items-center gap-2 text-accent bg-primary px-3 py-1.5 rounded-full shadow-lg">
-                       <Sparkles size={12} />
-                       <span className="text-[9px] font-black uppercase tracking-widest">Selected</span>
-                    </div>
-                  )}
+                  {plan.popular && <Zap className="text-accent fill-accent" size={20} />}
                 </div>
-                <div className="flex items-baseline gap-2 mt-6">
-                  <span className="text-5xl font-black text-primary tracking-tighter">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-6xl font-black tracking-tighter">
                     ${billingCycle === "monthly" ? plan.monthlyPrice : plan.yearlyPrice}
                   </span>
-                  <span className="text-muted-foreground font-bold text-sm uppercase tracking-widest opacity-50">/{billingCycle === "monthly" ? "mo" : "yr"}</span>
+                  <span className={cn("text-xs font-black uppercase tracking-widest opacity-60", plan.popular ? "text-white" : "text-muted-foreground")}>/{billingCycle === "monthly" ? "mo" : "yr"}</span>
                 </div>
-                <CardDescription className="mt-6 text-sm font-medium leading-relaxed min-h-[64px] text-muted-foreground/80">
+                <CardDescription className={cn("text-sm font-bold leading-relaxed", plan.popular ? "text-white/80" : "text-muted-foreground/80")}>
                   {plan.description}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="flex-1 px-10 pb-10">
-                <div className="space-y-5">
-                  <p className="text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground opacity-50">Included Features</p>
-                  <ul className="space-y-5">
-                    {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-4 text-sm">
-                        <div className="rounded-full bg-primary/10 p-1.5 text-primary mt-0.5 shadow-inner">
-                          <Check size={12} strokeWidth={4} />
-                        </div>
-                        <span className="font-bold text-primary/80">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              <CardContent className="flex-1 px-10 pb-10 space-y-8">
+                <div className={cn("h-px w-full", plan.popular ? "bg-white/20" : "bg-secondary")} />
+                <ul className="space-y-5">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-center gap-4 text-sm">
+                      <div className={cn("rounded-full p-1.5 shadow-sm", plan.popular ? "bg-white/10 text-accent" : "bg-primary/10 text-primary")}>
+                        <Check size={14} strokeWidth={4} />
+                      </div>
+                      <span className="font-black uppercase text-[10px] tracking-tight">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
               </CardContent>
-              <CardFooter className="flex justify-center pb-20 pt-10">
-                <div className="relative group/bull">
-                  <Button 
-                    className={cn(
-                      "w-36 h-36 rounded-full font-black uppercase tracking-[0.1em] text-[10px] transition-all duration-700 shadow-[0_20px_50px_rgba(0,0,0,0.15)] hover:shadow-[0_30px_60px_rgba(0,0,0,0.2)] hover:scale-110 active:scale-95 flex flex-col items-center justify-center text-center p-4",
-                      plan.name === currentPlan 
-                        ? "bg-muted/50 text-muted-foreground/30 cursor-default border-4 border-muted" 
-                        : "bg-primary text-white hover:bg-primary/90"
-                    )}
-                    onClick={() => handleSubscribe(plan.name)}
-                    disabled={plan.name === currentPlan}
-                  >
-                    <span className="max-w-[80px] leading-tight">
-                      {plan.name === currentPlan ? "ACTIVE MEMBERSHIP" : "UPGRADE PLAN"}
-                    </span>
-                  </Button>
-                  {plan.name !== currentPlan && (
-                    <div className="absolute -inset-2 rounded-full border border-primary/20 animate-pulse pointer-events-none group-hover/bull:scale-125 transition-transform duration-700" />
+              <CardFooter className="p-10 pb-14">
+                <Button 
+                  className={cn(
+                    "w-full h-16 rounded-[2rem] font-black uppercase tracking-widest text-[11px] shadow-2xl transition-all hover:scale-[1.05] active:scale-[0.98]",
+                    plan.popular 
+                      ? "bg-white text-primary hover:bg-white/90" 
+                      : "bg-primary text-white hover:bg-primary/90"
                   )}
-                </div>
+                  onClick={() => handleSubscribe(plan.name)}
+                >
+                  {plan.name === currentPlan ? "Current Plan" : "Upgrade Express"}
+                </Button>
               </CardFooter>
             </Card>
           ))}
         </div>
 
-        {/* Lifecycle Path Section - Step by Step design */}
-        <div className="relative pt-20">
-          <div className="text-center mb-20">
-            <h2 className="text-3xl font-black text-primary tracking-tighter uppercase">Member Journey</h2>
-            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground opacity-40">System Lifecycle Protocol</p>
-          </div>
-
-          <div className="max-w-6xl mx-auto relative">
-            {/* Timeline Line */}
-            <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-primary/10 -translate-x-1/2 hidden md:block" />
-
-            <div className="space-y-24">
-              {LIFECYCLE_STEPS.map((step, idx) => (
-                <div key={idx} className={cn("relative flex items-center justify-center md:justify-start", step.align === "right" ? "md:justify-end" : "")}>
-                  {/* Timeline Dot */}
-                  <div className="absolute left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-white border-2 border-primary/20 flex items-center justify-center z-10 hidden md:flex shadow-xl shadow-primary/5">
-                    <step.icon size={20} className="text-primary" />
-                    <div className="absolute inset-0 rounded-full bg-primary/5 animate-ping opacity-20" />
-                  </div>
-
-                  {/* Card content */}
-                  <motion.div 
-                    initial={{ opacity: 0, x: step.align === "left" ? -40 : 40 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    className={cn(
-                      "w-full md:w-[45%] glass-card rounded-[3rem] p-10 space-y-6 relative overflow-hidden group",
-                      step.align === "left" ? "md:mr-auto" : "md:ml-auto"
-                    )}
-                  >
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-2xl font-black text-primary tracking-tighter">{step.title}</h3>
-                      <Badge className="bg-primary/5 text-primary border-none text-[9px] font-black px-3 py-1 rounded-lg">STEP {step.step}</Badge>
-                    </div>
-                    <p className="text-sm font-medium text-muted-foreground leading-relaxed">
-                      {step.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2 pt-4">
-                      {step.tags.map((tag, tIdx) => (
-                        <div key={tIdx} className="px-3 py-1.5 rounded-xl border border-primary/10 bg-white/40 text-[9px] font-black uppercase tracking-widest text-primary/60 hover:bg-primary/5 transition-colors cursor-default">
-                          {tag}
-                        </div>
-                      ))}
-                    </div>
-                  </motion.div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+           {[
+             { icon: ZapIcon, title: "Instant Access", desc: "Digital verification in under 10 minutes." },
+             { icon: Timer, title: "Rapid Payout", desc: "Prizes settled within 24 hours of selection." },
+             { icon: ShieldCheck, title: "Impact Verified", desc: "Blockchain-backed social impact receipts." },
+           ].map((item, idx) => (
+             <div key={idx} className="p-12 rounded-[3.5rem] bg-secondary/50 border border-primary/5 text-center space-y-6">
+                <div className="w-16 h-16 rounded-[2rem] bg-white flex items-center justify-center text-primary mx-auto shadow-sm">
+                  <item.icon size={32} />
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white/40 backdrop-blur-2xl rounded-[4rem] p-16 shadow-2xl border border-white/60 grid grid-cols-1 md:grid-cols-3 gap-16 relative overflow-hidden">
-           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
-           <div className="flex flex-col items-center text-center space-y-4">
-              <div className="w-20 h-20 rounded-[2rem] bg-white/60 backdrop-blur-md flex items-center justify-center text-primary mb-2 shadow-xl border border-white/60">
-                <CreditCard size={32} />
-              </div>
-              <h4 className="font-bold text-xl text-primary tracking-tight">Encrypted Checkout</h4>
-              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest leading-relaxed opacity-60">Stripe PCI-DSS certified gateway for maximum protection.</p>
-           </div>
-           <div className="flex flex-col items-center text-center space-y-4">
-              <div className="w-20 h-20 rounded-[2rem] bg-white/60 backdrop-blur-md flex items-center justify-center text-primary mb-2 shadow-xl border border-white/60">
-                <Timer size={32} />
-              </div>
-              <h4 className="font-bold text-xl text-primary tracking-tight">Adaptive Lifecycle</h4>
-              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest leading-relaxed opacity-60">Seamless auto-renewals with smart grace periods for users.</p>
-           </div>
-           <div className="flex flex-col items-center text-center space-y-4">
-              <div className="w-20 h-20 rounded-[2rem] bg-white/60 backdrop-blur-md flex items-center justify-center text-primary mb-2 shadow-xl border border-white/60">
-                <ShieldCheck size={32} />
-              </div>
-              <h4 className="font-bold text-xl text-primary tracking-tight">Instant Validation</h4>
-              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest leading-relaxed opacity-60">Real-time status checks on every draw eligibility request.</p>
-           </div>
+                <h4 className="text-2xl font-black text-primary tracking-tighter">{item.title}</h4>
+                <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest leading-loose">{item.desc}</p>
+             </div>
+           ))}
         </div>
       </div>
     </AppLayout>

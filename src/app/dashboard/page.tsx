@@ -3,7 +3,7 @@
 import * as React from "react"
 import { AppLayout } from "@/components/layout/AppLayout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Trophy, TrendingUp, Zap, AlertCircle, Target, History, Sparkles } from "lucide-react"
+import { Trophy, TrendingUp, Zap, AlertCircle, Target, History, Sparkles, Timer } from "lucide-react"
 import { 
   CartesianGrid, 
   XAxis, 
@@ -62,75 +62,53 @@ export default function Dashboard() {
 
   return (
     <AppLayout>
-      <div className="space-y-10">
+      <div className="space-y-12">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-1">
-            <h1 className="text-4xl font-bold text-primary flex items-center gap-3">
-              Performance Hub <Sparkles className="text-accent" size={28} />
+          <div className="space-y-2">
+            <h1 className="text-5xl font-black text-primary tracking-tighter flex items-center gap-4">
+              Performance Hub <Zap className="text-accent fill-accent" size={32} />
             </h1>
-            <p className="text-muted-foreground font-medium">Elevate your game with AI-driven insights and charity tracking.</p>
+            <div className="flex items-center gap-2">
+               <Badge className="bg-primary/10 text-primary border-none text-[9px] font-black px-3 py-1 rounded-md">EXPRESS VERIFIED</Badge>
+               <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">Real-time Impact Analytics</p>
+            </div>
           </div>
-          <div className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/40 backdrop-blur-md border border-white/60 shadow-sm">
-             <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-             <span className="text-xs font-bold uppercase tracking-widest text-primary">Live Stats Verified</span>
+          <div className="flex items-center gap-4 px-6 py-3 rounded-full bg-secondary border border-primary/10 shadow-sm">
+             <Timer size={16} className="text-accent" />
+             <span className="text-[10px] font-black uppercase tracking-widest text-primary">Next Update: 8m 42s</span>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <Card className="glass-card rounded-[2.5rem] relative overflow-hidden group hover:scale-[1.02] transition-transform duration-500">
-             <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-700">
-              <Trophy size={140} className="text-primary" />
-             </div>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                <Trophy size={14} className="text-primary" /> Handicap
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-5xl font-bold text-primary tracking-tighter">14.5</div>
-              <div className="mt-4 inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest">
-                <TrendingUp size={12} className="mr-1.5" /> -0.4 Progress
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="glass-card rounded-[2.5rem] overflow-hidden hover:scale-[1.02] transition-transform duration-500">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                <Target size={14} className="text-primary" /> Recent Avg
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-5xl font-bold text-primary tracking-tighter">36.4</div>
-              <p className="mt-4 text-[10px] text-muted-foreground/60 uppercase tracking-widest font-bold">Stableford Index</p>
-            </CardContent>
-          </Card>
-
-          <Card className="glass-card rounded-[2.5rem] overflow-hidden hover:scale-[1.02] transition-transform duration-500 bg-primary/5">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                <Sparkles size={14} className="text-accent" /> Draw Entries
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-5xl font-bold text-accent drop-shadow-sm">12</div>
-              <div className="mt-4 flex items-center gap-2">
-                 <div className="h-1.5 w-1.5 rounded-full bg-accent" />
-                 <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">Next draw in 4 days</p>
-              </div>
-            </CardContent>
-          </Card>
+          {[
+            { icon: Trophy, label: "Current handicap", value: "14.5", sub: "-0.4 Last Week", color: "primary" },
+            { icon: Target, label: "Stableford Index", value: "36.4", sub: "Avg Top 5 Rounds", color: "primary" },
+            { icon: Zap, label: "Active Entries", value: "12", sub: "Prize Pool Eligibility", color: "accent" },
+          ].map((stat, i) => (
+            <Card key={i} className="glass-card overflow-hidden hover:translate-y-[-5px] transition-transform group">
+              <CardContent className="p-10 space-y-6">
+                <div className={cn("p-3 rounded-xl w-fit", stat.color === 'accent' ? 'bg-accent/10 text-accent' : 'bg-primary/10 text-primary')}>
+                  <stat.icon size={24} className={stat.color === 'accent' ? 'fill-accent' : ''} />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60">{stat.label}</p>
+                  <h3 className={cn("text-5xl font-black tracking-tighter", stat.color === 'accent' ? 'text-accent' : 'text-primary')}>{stat.value}</h3>
+                </div>
+                <p className="text-[9px] font-black uppercase tracking-widest text-primary/60">{stat.sub}</p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          <Card className="glass-card rounded-[3rem] overflow-hidden p-2">
-            <CardHeader className="flex flex-row items-center justify-between p-6">
-              <div>
-                <CardTitle className="text-2xl font-bold text-primary">Score Trends</CardTitle>
-                <CardDescription className="text-xs uppercase font-bold tracking-widest text-muted-foreground">Historical Performance</CardDescription>
-              </div>
-              <div className="p-3 bg-white/40 rounded-2xl border border-white/60">
-                <History size={20} className="text-primary opacity-40" />
+          <Card className="glass-card p-4">
+            <CardHeader className="p-8">
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-2xl font-black text-primary">Score Dynamics</CardTitle>
+                  <CardDescription className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Express Historical Trend</CardDescription>
+                </div>
+                <History className="text-primary/20" size={32} />
               </div>
             </CardHeader>
             <CardContent className="h-[340px] px-4">
@@ -138,92 +116,88 @@ export default function Dashboard() {
                 <AreaChart data={MOCK_DATA.slice(-5)}>
                   <defs>
                     <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.4}/>
+                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.2}/>
                       <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="5 5" vertical={false} stroke="hsla(var(--primary), 0.05)" />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold', fill: 'hsl(var(--muted-foreground))' }} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold', fill: 'hsl(var(--muted-foreground))' }} />
+                  <CartesianGrid strokeDasharray="5 5" vertical={false} stroke="rgba(0,0,0,0.03)" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 9, fontWeight: 'bold', fill: 'hsl(var(--primary))' }} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 9, fontWeight: 'bold', fill: 'hsl(var(--primary))' }} />
                   <Tooltip 
                     contentStyle={{ 
-                      backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                      backdropFilter: 'blur(10px)',
-                      borderRadius: '20px', 
-                      border: '1px solid rgba(255, 255, 255, 0.4)', 
-                      boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)' 
+                      borderRadius: '1.5rem', 
+                      border: 'none', 
+                      boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+                      background: 'white'
                     }} 
                   />
-                  <Area type="monotone" dataKey="score" stroke="hsl(var(--primary))" strokeWidth={5} fillOpacity={1} fill="url(#colorScore)" />
+                  <Area type="monotone" dataKey="score" stroke="hsl(var(--primary))" strokeWidth={4} fill="url(#colorScore)" />
                 </AreaChart>
               </ResponsiveContainer>
             </CardContent>
           </Card>
 
-          <Card className="glass-card rounded-[3rem] overflow-hidden flex flex-col">
-            <CardHeader className="bg-primary/5 border-b border-white/40 p-8">
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <CardTitle className="flex items-center text-2xl font-bold text-primary">
-                    AI Coaching <Sparkles className="ml-3 text-accent" size={24} />
-                  </CardTitle>
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">Generated by Gemini 2.5</p>
-                </div>
-                <Button variant="outline" size="sm" onClick={fetchAnalysis} disabled={loading} className="rounded-full bg-white/40 border-white/60 hover:bg-white/80 transition-all font-bold px-6">
-                  {loading ? "Analyzing..." : "Refresh Coaching"}
-                </Button>
-              </div>
+          <Card className="glass-card overflow-hidden flex flex-col bg-secondary/30 border-none">
+            <CardHeader className="bg-primary text-white p-10 relative overflow-hidden">
+               <Zap className="absolute top-[-20px] right-[-20px] w-48 h-48 opacity-10" />
+               <div className="flex items-center justify-between relative z-10">
+                  <div className="space-y-1">
+                    <CardTitle className="text-3xl font-black tracking-tight">AI Express Coach</CardTitle>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-white/60">Powered by Zepto Intelligence</p>
+                  </div>
+                  <Button variant="outline" size="sm" onClick={fetchAnalysis} disabled={loading} className="rounded-full bg-white/10 border-white/20 hover:bg-white text-white hover:text-primary font-black uppercase tracking-widest text-[9px] px-6 h-10">
+                    {loading ? "Analyzing..." : "Refresh"}
+                  </Button>
+               </div>
             </CardHeader>
-            <CardContent className="p-8 space-y-8 flex-1">
+            <CardContent className="p-10 space-y-10 flex-1">
               {aiAnalysis ? (
-                <>
-                  <div className="p-6 bg-white/50 backdrop-blur-md rounded-[2rem] border border-white/60 shadow-inner">
-                    <p className="text-sm font-medium leading-relaxed italic text-primary/80">
-                      "{aiAnalysis.summary}"
-                    </p>
+                <div className="space-y-10">
+                  <div className="p-8 rounded-[2rem] bg-white shadow-xl shadow-black/[0.02] border border-secondary italic text-primary/80 font-bold leading-relaxed">
+                    "{aiAnalysis.summary}"
                   </div>
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-4">
-                      <h4 className="text-[10px] font-black uppercase text-muted-foreground tracking-[0.2em]">Verified Strengths</h4>
-                      <div className="space-y-2">
+                      <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/40">Power Strengths</h4>
+                      <div className="space-y-3">
                         {aiAnalysis.strengths.map((s, i) => (
-                          <div key={i} className="flex items-center p-3 rounded-2xl bg-primary/5 border border-primary/10 text-xs font-bold text-primary">
-                             <div className="mr-3 p-1.5 bg-primary/10 rounded-lg"><TrendingUp size={12} /></div>
-                            {s}
+                          <div key={i} className="flex items-center p-4 rounded-2xl bg-primary/5 text-[11px] font-black text-primary uppercase tracking-tight">
+                             <TrendingUp size={14} className="mr-3 text-accent" />
+                             {s}
                           </div>
                         ))}
                       </div>
                     </div>
                     <div className="space-y-4">
-                      <h4 className="text-[10px] font-black uppercase text-muted-foreground tracking-[0.2em]">Optimization Required</h4>
-                      <div className="space-y-2">
+                      <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/40">Critical Fixes</h4>
+                      <div className="space-y-3">
                         {aiAnalysis.weaknesses.map((w, i) => (
-                          <div key={i} className="flex items-center p-3 rounded-2xl bg-accent/5 border border-accent/10 text-xs font-bold text-primary">
-                             <div className="mr-3 p-1.5 bg-accent/20 rounded-lg"><AlertCircle size={12} /></div>
-                            {w}
+                          <div key={i} className="flex items-center p-4 rounded-2xl bg-accent/5 text-[11px] font-black text-accent uppercase tracking-tight">
+                             <AlertCircle size={14} className="mr-3" />
+                             {w}
                           </div>
                         ))}
                       </div>
                     </div>
                   </div>
 
-                  <div className="pt-8 border-t border-white/40">
-                    <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-6">Actionable Training Plan</h4>
+                  <div className="pt-10 border-t border-secondary space-y-6">
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/40">Actionable 10m Drills</h4>
                     <div className="grid grid-cols-1 gap-4">
                       {aiAnalysis.actionableTips.map((tip, i) => (
-                        <div key={i} className="flex items-start gap-4 p-5 bg-white/40 rounded-[2rem] border border-white/60 hover:scale-[1.01] hover:bg-white/60 transition-all cursor-default">
-                          <div className="p-2.5 bg-primary/5 rounded-xl text-primary"><Target size={18} /></div>
-                          <p className="text-xs font-bold leading-relaxed text-foreground/80">{tip}</p>
+                        <div key={i} className="flex items-start gap-5 p-6 bg-white rounded-[2rem] border border-secondary hover:translate-x-2 transition-transform cursor-default shadow-sm">
+                          <div className="p-2.5 bg-primary rounded-xl text-white shadow-lg"><Target size={18} /></div>
+                          <p className="text-[11px] font-black leading-relaxed text-primary uppercase tracking-tight">{tip}</p>
                         </div>
                       ))}
                     </div>
                   </div>
-                </>
+                </div>
               ) : (
-                <div className="flex flex-col items-center justify-center py-20 text-muted-foreground/30">
-                  <Sparkles size={80} className="mb-6 animate-pulse" />
-                  <p className="text-sm font-black uppercase tracking-widest">Coaching Engine Standby</p>
+                <div className="flex flex-col items-center justify-center py-20 text-primary/10">
+                  <Zap size={80} className="mb-6 animate-pulse fill-primary/10" />
+                  <p className="text-[10px] font-black uppercase tracking-widest">Awaiting Rapid Analysis...</p>
                 </div>
               )}
             </CardContent>

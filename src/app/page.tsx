@@ -2,145 +2,128 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { Trophy, Heart, Sparkles, Target, ArrowRight, Gift } from "lucide-react"
+import { Trophy, Heart, Sparkles, Target, ArrowRight, Zap, Timer } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { motion } from "framer-motion"
+import { cn } from "@/lib/utils"
 
 export default function LandingPage() {
-  const [pixels, setPixels] = React.useState<{id: number, top: string, left: string, delay: string}[]>([])
-
-  React.useEffect(() => {
-    const newPixels = Array.from({ length: 30 }).map((_, i) => ({
-      id: i,
-      top: `${Math.random() * 100}%`,
-      left: `${Math.random() * 100}%`,
-      delay: `${Math.random() * 8}s`
-    }))
-    setPixels(newPixels)
-  }, [])
-
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden">
-      {/* Design Elements: Glowing Particles and Streaks */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="light-streak top-[15%] right-[-5%] opacity-20" />
-        <div className="light-streak bottom-[20%] left-[-10%] opacity-15" />
-        
-        {pixels.map((pixel) => (
-          <div 
-            key={pixel.id}
-            className="pixel-particle"
-            style={{ 
-              top: pixel.top, 
-              left: pixel.left, 
-              animationDelay: pixel.delay,
-              backgroundColor: pixel.id % 2 === 0 ? 'hsl(var(--primary))' : 'hsl(var(--accent))'
-            }} 
-          />
-        ))}
-
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/5 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-accent/5 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '2s' }} />
+    <div className="min-h-screen bg-white relative overflow-hidden font-sans">
+      {/* Design Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-0 w-full h-[50vh] bg-gradient-to-b from-primary/5 to-transparent" />
+        <div className="absolute -top-20 -right-20 w-96 h-96 bg-primary/10 rounded-full blur-[100px]" />
+        <div className="absolute top-1/2 -left-20 w-80 h-80 bg-accent/10 rounded-full blur-[80px]" />
       </div>
 
       <header className="container mx-auto px-6 py-8 flex items-center justify-between relative z-10">
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="bg-primary/90 p-2.5 rounded-2xl text-white group-hover:rotate-12 transition-all duration-500 shadow-xl shadow-primary/20">
-            <Trophy size={28} />
+        <Link href="/" className="flex items-center gap-3">
+          <div className="bg-primary p-2.5 rounded-[1rem] text-white shadow-xl shadow-primary/20">
+            <Zap size={28} className="fill-white" />
           </div>
           <div className="flex flex-col">
-            <span className="font-headline text-3xl font-bold text-primary leading-none">Golf</span>
-            <span className="font-headline text-xs font-black text-muted-foreground uppercase tracking-widest opacity-70">Charity Platform</span>
+            <span className="text-3xl font-black text-primary leading-none tracking-tighter">ZEPTO</span>
+            <span className="text-[10px] font-black text-accent uppercase tracking-[0.3em]">IMPACT</span>
           </div>
         </Link>
         <div className="flex items-center gap-4">
           <Link href="/dashboard">
-            <Button variant="ghost" className="font-bold text-primary hover:bg-gray-50 rounded-xl px-6">Login</Button>
+            <Button variant="ghost" className="font-black text-[11px] uppercase tracking-widest text-primary">Login</Button>
           </Link>
           <Link href="/subscription">
-            <Button className="bg-primary text-white font-black uppercase tracking-widest rounded-xl px-8 shadow-xl shadow-primary/20 hover:scale-[1.05] transition-transform">
-              Join Now
+            <Button className="bg-primary text-white font-black uppercase tracking-widest rounded-full px-8 h-12 shadow-xl shadow-primary/20 hover:bg-primary/90">
+              Get Started
             </Button>
           </Link>
         </div>
       </header>
 
-      <main className="container mx-auto px-6 relative z-10">
-        {/* Hero Section */}
-        <section className="py-20 lg:py-32 flex flex-col items-center text-center space-y-10">
-          <Badge className="bg-primary/5 text-primary border-primary/20 px-6 py-2 rounded-full font-black uppercase tracking-[0.3em] text-[10px] animate-in fade-in slide-in-from-bottom-4 duration-700">
-            Beyond the Fairway
-          </Badge>
-          <h1 className="text-6xl md:text-8xl font-black text-primary tracking-tighter max-w-4xl leading-tight animate-in fade-in slide-in-from-bottom-8 duration-1000">
-            Play with <span className="text-accent italic">Purpose.</span> Win for <span className="text-foreground">Impact.</span>
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground/80 font-medium max-w-2xl leading-relaxed animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-200">
-            The world's first golf performance platform where your verified scores drive global charitable funding. Level up your game and unlock exclusive rewards.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 pt-6 animate-in fade-in slide-in-from-bottom-16 duration-1000 delay-500">
-            <Link href="/subscription">
-              <Button size="lg" className="h-16 px-12 bg-primary text-white font-black uppercase tracking-[0.2em] rounded-2xl shadow-2xl shadow-primary/30 hover:scale-[1.02] transition-all">
-                Start Impacting <ArrowRight size={20} className="ml-3" />
-              </Button>
-            </Link>
-            <Link href="/dashboard">
-              <Button size="lg" variant="outline" className="h-16 px-12 rounded-2xl border-gray-200 bg-white/40 backdrop-blur-md font-bold text-primary hover:bg-white/60">
-                Explore Dashboard
-              </Button>
-            </Link>
-          </div>
-        </section>
-
-        {/* Impact Cards */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-8 py-20">
-          {[
-            { 
-              icon: Target, 
-              title: "Verified Scores", 
-              desc: "Record Stableford points from any course. Verified by AI for fair draw eligibility." 
-            },
-            { 
-              icon: Heart, 
-              title: "Social Impact", 
-              desc: "A significant portion of your subscription fuels clean water, education, and reforestation." 
-            },
-            { 
-              icon: Gift, 
-              title: "Premium Rewards", 
-              desc: "Monthly draws for high-performance gear and once-in-a-lifetime golf experiences." 
-            }
-          ].map((feature, i) => (
-            <div key={i} className="glass-card p-10 rounded-[3rem] space-y-6 hover:scale-[1.05] transition-all duration-500 group">
-              <div className="w-16 h-16 rounded-2xl bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-inner">
-                <feature.icon size={32} />
-              </div>
-              <h3 className="text-2xl font-bold text-primary tracking-tight">{feature.title}</h3>
-              <p className="text-sm font-medium text-muted-foreground/70 leading-relaxed">{feature.desc}</p>
+      <main className="container mx-auto px-6 relative z-10 pt-16 lg:pt-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="space-y-10 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary rounded-full border border-primary/10">
+              <Timer size={16} className="text-accent" />
+              <span className="text-[10px] font-black text-primary uppercase tracking-widest">Impact in 10 Minutes</span>
             </div>
-          ))}
-        </section>
-
-        {/* Secondary CTA */}
-        <section className="py-20">
-          <div className="bg-primary rounded-[4rem] p-12 md:p-24 relative overflow-hidden text-center space-y-8 shadow-2xl shadow-primary/20">
-            <Sparkles className="absolute top-[-20px] right-[-20px] w-64 h-64 opacity-5" />
-            <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter max-w-2xl mx-auto">Ready to drive meaningful change?</h2>
-            <p className="text-white/70 text-lg font-medium max-w-xl mx-auto">Join a community of impact-driven golfers and start winning prizes while supporting the causes you care about.</p>
-            <Link href="/subscription" className="inline-block pt-6">
-              <Button className="h-16 px-12 bg-accent text-primary font-black uppercase tracking-[0.2em] rounded-2xl shadow-2xl shadow-accent/20 hover:scale-[1.05] transition-all">
-                Join the Elite Albatross
-              </Button>
-            </Link>
+            <h1 className="text-6xl md:text-8xl font-black text-primary tracking-tighter leading-[0.9] lg:max-w-xl">
+              Verified Play. <span className="text-accent italic">Instant</span> Results.
+            </h1>
+            <p className="text-xl text-muted-foreground font-bold leading-relaxed lg:max-w-md">
+              The world's fastest golf performance platform. Verified scores, instant prizes, and express charity impact.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
+              <Link href="/subscription">
+                <Button size="lg" className="h-16 px-12 bg-primary text-white font-black uppercase tracking-[0.1em] rounded-3xl shadow-2xl shadow-primary/30 text-lg">
+                  Join The Club <ArrowRight size={20} className="ml-3" />
+                </Button>
+              </Link>
+              <div className="flex items-center gap-4 px-8 border-2 border-primary/10 rounded-3xl bg-white/50 backdrop-blur-md">
+                 <div className="flex -space-x-3">
+                   {[1,2,3].map(i => (
+                     <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-secondary flex items-center justify-center font-black text-primary text-[10px]">P{i}</div>
+                   ))}
+                 </div>
+                 <span className="text-[10px] font-black uppercase text-primary/60 tracking-widest">12k+ Impactors</span>
+              </div>
+            </div>
           </div>
+
+          <div className="relative">
+             <div className="absolute inset-0 bg-primary/5 rounded-[4rem] blur-[60px]" />
+             <div className="relative glass-card p-12 space-y-10 border-2 border-white bg-white/40 shadow-2xl">
+                <div className="grid grid-cols-2 gap-8">
+                  <div className="p-8 rounded-[2rem] bg-white shadow-xl shadow-black/[0.02] border border-secondary">
+                     <Zap size={32} className="text-accent mb-4 fill-accent" />
+                     <h3 className="text-2xl font-black text-primary">Fast</h3>
+                     <p className="text-[10px] font-bold text-muted-foreground uppercase mt-2">10m Verification</p>
+                  </div>
+                  <div className="p-8 rounded-[2rem] bg-primary text-white shadow-xl shadow-primary/20">
+                     <Heart size={32} className="text-white mb-4 fill-white" />
+                     <h3 className="text-2xl font-black">Direct</h3>
+                     <p className="text-[10px] font-bold opacity-70 uppercase mt-2">100% Verified Impact</p>
+                  </div>
+                </div>
+                <div className="p-10 rounded-[2.5rem] bg-white border border-secondary flex items-center justify-between">
+                   <div className="space-y-1">
+                     <h4 className="text-sm font-black text-primary tracking-tight">Express Draw Pool</h4>
+                     <p className="text-[10px] font-bold text-accent uppercase tracking-widest">Live Now: $45,200</p>
+                   </div>
+                   <Button className="rounded-full bg-accent text-white px-6 font-black uppercase text-[10px]">Enter</Button>
+                </div>
+             </div>
+          </div>
+        </div>
+
+        <section className="py-32 grid grid-cols-1 md:grid-cols-3 gap-12">
+          {[
+            { icon: Target, title: "Precision Track", color: "primary" },
+            { icon: Sparkles, title: "Elite Perks", color: "accent" },
+            { icon: Timer, title: "Rapid Payouts", color: "primary" },
+          ].map((f, i) => (
+            <motion.div key={i} whileHover={{ y: -10 }} className="p-10 rounded-[3.5rem] bg-white shadow-2xl shadow-black/[0.03] border border-secondary space-y-6">
+              <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center", f.color === 'primary' ? 'bg-primary/5 text-primary' : 'bg-accent/5 text-accent')}>
+                <f.icon size={32} />
+              </div>
+              <h3 className="text-2xl font-black text-primary tracking-tighter">{f.title}</h3>
+              <p className="text-sm font-bold text-muted-foreground/70 leading-relaxed uppercase tracking-widest">
+                Optimized performance metrics designed for high-frequency golf activity.
+              </p>
+            </motion.div>
+          ))}
         </section>
       </main>
 
-      <footer className="container mx-auto px-6 py-12 border-t border-gray-100 mt-20 relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 opacity-60">
-        <p className="text-[10px] font-black uppercase tracking-widest text-primary">© 2024 Golf Charity Platform. All Rights Reserved.</p>
+      <footer className="container mx-auto px-6 py-12 border-t border-secondary mt-20 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="flex items-center gap-2">
+           <Zap size={20} className="text-primary fill-primary" />
+           <span className="text-[10px] font-black uppercase tracking-widest text-primary">ZEPTO IMPACT ENGINE v2.0</span>
+        </div>
         <div className="flex gap-8">
-          <Link href="#" className="text-[10px] font-black uppercase tracking-widest text-primary hover:opacity-100 transition-opacity">Privacy Policy</Link>
-          <Link href="#" className="text-[10px] font-black uppercase tracking-widest text-primary hover:opacity-100 transition-opacity">Terms of Service</Link>
-          <Link href="#" className="text-[10px] font-black uppercase tracking-widest text-primary hover:opacity-100 transition-opacity">Governance</Link>
+          {["Privacy", "Terms", "Support"].map(l => (
+            <Link key={l} href="#" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors">{l}</Link>
+          ))}
         </div>
       </footer>
     </div>
