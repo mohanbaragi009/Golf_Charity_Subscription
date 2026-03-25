@@ -1,6 +1,6 @@
 'use server';
 /**
- * @fileOverview A Genkit flow for selecting prize winners based on user participation and golf scores.
+ * @fileOverview A Genkit flow for selecting prize winners based on user participation, golf scores, and specific draw strategies.
  *
  * - prizeDrawWinnerSelection - A function that handles the prize winner selection process.
  * - PrizeDrawWinnerSelectionInput - The input type for the prizeDrawWinnerSelection function.
@@ -12,11 +12,14 @@ import {z} from 'genkit';
 
 const PrizeDrawWinnerSelectionInputSchema = z.object({
   prizeDescription: z.string().describe('A description of the prize to be awarded.'),
+  drawType: z.enum(['3-Number Match', '4-Number Match', '5-Number Match']).default('5-Number Match').describe('The type of draw being conducted.'),
+  drawStrategy: z.enum(['random', 'algorithmic']).default('algorithmic').describe('The selection logic: random (lottery style) or algorithmic (weighted by scores).'),
+  isSimulation: z.boolean().default(false).describe('Whether this is a simulation or an official draw.'),
   eligibleUsers: z.array(z.object({
     userId: z.string().describe('The unique identifier for the user.'),
-    participationScore: z.number().describe('A numerical score representing the user\'s overall platform participation. Higher scores indicate more engagement.'),
-    golfScores: z.array(z.number()).describe('An array of the user\'s recent Stableford golf scores. Higher Stableford points are better.'),
-  })).describe('An array of eligible users, including their participation score and recent golf scores.'),
+    participationScore: z.number().describe('A numerical score representing the user\'s overall platform participation.'),
+    golfScores: z.array(z.number()).describe('An array of the user\'s last 5 Stableford golf scores (range 1-45).'),
+  })).describe('An array of eligible users with their data.'),
   numberOfWinners: z.number().int().positive().describe('The exact number of winners to select.'),
 });
 export type PrizeDrawWinnerSelectionInput = z.infer<typeof PrizeDrawWinnerSelectionInputSchema>;
@@ -24,9 +27,11 @@ export type PrizeDrawWinnerSelectionInput = z.infer<typeof PrizeDrawWinnerSelect
 const PrizeDrawWinnerSelectionOutputSchema = z.object({
   winners: z.array(z.object({
     userId: z.string().describe('The unique identifier of the selected winner.'),
-    justification: z.string().describe('A brief explanation of why this user was selected as a winner, considering their participation and golf scores.'),
+    justification: z.string().describe('A brief explanation of why this user was selected based on the chosen strategy.'),
+    matchType: z.string().optional().describe('The specific match achieved (e.g., "5/5 match").'),
   })).describe('An array of selected prize winners.'),
-  explanation: z.string().describe('A general explanation of the criteria and approach used to select the winners.'),
+  explanation: z.string().describe('A general explanation of the criteria and strategy used.'),
+  simulationNote: z.string().optional().describe('A note if this was a simulation mode run.'),
 });
 export type PrizeDrawWinnerSelectionOutput = z.infer<typeof PrizeDrawWinnerSelectionOutputSchema>;
 
@@ -38,24 +43,27 @@ const prizeDrawWinnerSelectionPrompt = ai.definePrompt({
   name: 'prizeDrawWinnerSelectionPrompt',
   input: {schema: PrizeDrawWinnerSelectionInputSchema},
   output: {schema: PrizeDrawWinnerSelectionOutputSchema},
-  prompt: `You are an intelligent algorithm designed to fairly and engagingly select prize winners for a golf charity platform.
-You need to select exactly {{{numberOfWinners}}} winners for the prize described as: "{{{prizeDescription}}}".
+  prompt: `You are an intelligent algorithm for a golf charity platform. 
+Your goal is to select exactly {{{numberOfWinners}}} winners for the prize: "{{{prizeDescription}}}".
 
-Consider the following eligible users and their data.
-- **Participation Score**: A higher score indicates more engagement.
-- **Golf Scores**: These are Stableford points. A higher Stableford score indicates better golf performance.
+Current Configuration:
+- **Draw Type**: {{{drawType}}}
+- **Strategy**: {{{drawStrategy}}} ({{#if (eq drawStrategy "random")}}Standard lottery-style random generation{{else}}Algorithmic weighting based on participation and golf score consistency{{/if}})
+- **Simulation Mode**: {{#if isSimulation}}ON (This is a test run){{else}}OFF (Official Draw){{/if}}
 
-Your selection should balance these two factors: reward active participation and acknowledge good golf performance. Strive for a selection that feels fair and encourages continued engagement with the platform and charity contributions.
-
-Eligible Users Data:
+User Data:
 {{#each eligibleUsers}}
-- User ID: {{{this.userId}}}
-  Participation Score: {{{this.participationScore}}}
-  Golf Scores (Stableford Points): {{#each this.golfScores}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
+- User: {{{this.userId}}}
+  Participation: {{{this.participationScore}}}
+  Last 5 Scores: {{#each this.golfScores}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
 {{/each}}
 
-Based on the above, select exactly {{{numberOfWinners}}} winners. Provide a justification for each winner's selection and a general explanation of your overall selection strategy.
-`,
+Selection Criteria:
+1. If strategy is 'random', prioritize fairness through equal probability, slightly nudged by participation.
+2. If strategy is 'algorithmic', weight users who have consistent golf scores near the "par" of Stableford (36) or high participation.
+3. For "{{{drawType}}}", simulate a matching process where users with more consistent or "lucky" scores within the specified number range are favored.
+
+Provide a detailed justification for each winner and a summary of the strategy applied.`,
 });
 
 const prizeDrawWinnerSelectionFlow = ai.defineFlow(
@@ -68,6 +76,9 @@ const prizeDrawWinnerSelectionFlow = ai.defineFlow(
     const {output} = await prizeDrawWinnerSelectionPrompt(input);
     if (!output) {
         throw new Error('No output received from the prompt.');
+    }
+    if (input.isSimulation) {
+      output.simulationNote = "This draw was performed in SIMULATION MODE. Results are not official and have not been published.";
     }
     return output;
   }
