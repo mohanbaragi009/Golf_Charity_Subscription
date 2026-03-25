@@ -38,36 +38,36 @@
   }
 
   .dark {
-    /* GoCharity Blue Dark Theme */
-    --background: 222 47% 11%;
+    /* GoCharity Blue Dark Theme - Premium Refinement */
+    --background: 222 47% 7%;
     --foreground: 210 40% 98%;
-    --card: 222 47% 12%;
+    --card: 222 47% 10%;
     --card-foreground: 210 40% 98%;
-    --popover: 222 47% 11%;
+    --popover: 222 47% 7%;
     --popover-foreground: 210 40% 98%;
-    --primary: 199 89% 48%; 
-    --primary-foreground: 222 47% 11%;
-    --secondary: 217.2 32.6% 17.5%;
+    --primary: 199 89% 55%; 
+    --primary-foreground: 222 47% 10%;
+    --secondary: 222 47% 12%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
+    --muted: 222 47% 12%;
     --muted-foreground: 215 20.2% 65.1%;
     --accent: 191 91% 50%; 
-    --accent-foreground: 222 47% 11%;
+    --accent-foreground: 222 47% 10%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 25%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 199 89% 48%;
+    --border: 222 47% 15%;
+    --input: 222 47% 12%;
+    --ring: 199 89% 55%;
 
     /* Sidebar Specifics */
-    --sidebar-background: 222 47% 11%;
+    --sidebar-background: 222 47% 8%;
     --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 199 89% 48%;
-    --sidebar-primary-foreground: 222 47% 11%;
-    --sidebar-accent: 217.2 32.6% 17.5%;
-    --sidebar-accent-foreground: 199 89% 48%;
-    --sidebar-border: 217.2 32.6% 25%;
-    --sidebar-ring: 199 89% 48%;
+    --sidebar-primary: 199 89% 55%;
+    --sidebar-primary-foreground: 222 47% 10%;
+    --sidebar-accent: 222 47% 12%;
+    --sidebar-accent-foreground: 199 89% 55%;
+    --sidebar-border: 222 47% 15%;
+    --sidebar-ring: 199 89% 55%;
   }
 }
 
@@ -78,8 +78,8 @@
   body {
     @apply bg-background text-foreground font-body transition-colors duration-500;
     background-image: 
-      radial-gradient(at 0% 0%, hsla(var(--primary), 0.08) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, hsla(var(--accent), 0.08) 0px, transparent 50%);
+      radial-gradient(at 0% 0%, hsla(var(--primary), 0.12) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, hsla(var(--accent), 0.12) 0px, transparent 50%);
     background-attachment: fixed;
     overflow-x: hidden;
   }

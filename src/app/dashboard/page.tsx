@@ -3,7 +3,7 @@
 import * as React from "react"
 import { AppLayout } from "@/components/layout/AppLayout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Trophy, TrendingUp, Zap, AlertCircle, Target, History, Timer, Heart, Users, ArrowUpRight, Sparkles } from "lucide-react"
+import { Trophy, TrendingUp, Zap, AlertCircle, Target, History, Timer, Heart, Users, ArrowUpRight, Sparkles, Crown, ArrowRight } from "lucide-react"
 import { 
   CartesianGrid, 
   XAxis, 
@@ -156,8 +156,7 @@ export default function Dashboard() {
             </Card>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Charity Milestone tracker */}
-              <Card className="glass-card p-10 bg-gradient-to-br from-white to-primary/5 relative overflow-hidden group">
+              <Card className="glass-card p-10 bg-gradient-to-br from-white to-primary/5 dark:from-primary/10 dark:to-transparent relative overflow-hidden group">
                 <Heart className="absolute -top-6 -right-6 w-32 h-32 text-primary/5 rotate-12 transition-transform group-hover:scale-110" />
                 <div className="relative z-10 space-y-6">
                   <div className="flex items-center gap-4">
@@ -174,14 +173,13 @@ export default function Dashboard() {
                     </div>
                     <Progress value={progress} className="h-3 bg-primary/5" />
                   </div>
-                  <Button className="w-full bg-white border border-primary/10 text-primary hover:bg-primary hover:text-white rounded-2xl font-black uppercase tracking-widest text-[9px] h-12 shadow-sm">
+                  <Button className="w-full bg-white dark:bg-primary/20 border border-primary/10 text-primary hover:bg-primary hover:text-white rounded-2xl font-black uppercase tracking-widest text-[9px] h-12 shadow-sm">
                     View Impact Report
                   </Button>
                 </div>
               </Card>
 
-              {/* Community Live Feed */}
-              <Card className="glass-card p-10 bg-white/40 overflow-hidden relative">
+              <Card className="glass-card p-10 bg-white/40 dark:bg-white/5 overflow-hidden relative">
                 <div className="absolute top-0 right-0 w-2 h-full bg-accent/20" />
                 <div className="space-y-6 h-full flex flex-col">
                   <div className="flex items-center justify-between">
@@ -200,7 +198,7 @@ export default function Dashboard() {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: idx * 0.1 }}
                         key={item.id} 
-                        className="flex items-center justify-between p-3 rounded-2xl bg-white/60 border border-white shadow-sm"
+                        className="flex items-center justify-between p-3 rounded-2xl bg-white/60 dark:bg-white/10 border border-white dark:border-white/5 shadow-sm"
                       >
                         <div className="flex flex-col">
                           <span className="text-[10px] font-black text-primary tracking-tight">{item.user}</span>
@@ -216,30 +214,6 @@ export default function Dashboard() {
                 </div>
               </Card>
             </div>
-            
-            {/* New "Stunning" Rewards Animation Area */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="p-12 rounded-[4rem] bg-primary text-white relative overflow-hidden group shadow-2xl shadow-primary/20"
-            >
-              <Sparkles className="absolute top-[-40px] left-[-40px] w-64 h-64 opacity-10 animate-pulse" />
-              <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
-                <div className="space-y-4 text-center md:text-left">
-                  <Badge className="bg-white/10 text-white border-none px-4 py-1.5 rounded-full font-black uppercase tracking-widest text-[9px]">Limited Challenge</Badge>
-                  <h3 className="text-4xl font-black tracking-tighter leading-none">The Albatross Quest</h3>
-                  <p className="text-white/60 text-xs font-bold uppercase tracking-widest leading-relaxed">Submit 3 rounds over 36pts this month to unlock the "Express Elite" exclusive driver skin.</p>
-                </div>
-                <div className="relative">
-                  <div className="bull-button scale-125 !bg-white !text-primary !border-primary group-hover:scale-150 transition-transform duration-700">
-                    JOIN
-                  </div>
-                  <ArrowUpRight className="absolute -top-2 -right-2 text-white animate-bounce" size={24} />
-                </div>
-              </div>
-              <div className="absolute bottom-[-20px] right-[-20px] w-48 h-48 bg-accent/20 rounded-full blur-3xl" />
-            </motion.div>
           </div>
 
           {/* Right Column (AI Insights) */}
@@ -260,7 +234,7 @@ export default function Dashboard() {
               <CardContent className="p-10 space-y-12 flex-1">
                 {aiAnalysis ? (
                   <div className="space-y-12">
-                    <div className="p-10 rounded-[3rem] bg-white shadow-2xl shadow-black/[0.03] border border-secondary italic text-primary/80 font-bold leading-relaxed text-lg">
+                    <div className="p-10 rounded-[3rem] bg-white dark:bg-white/5 shadow-2xl shadow-black/[0.03] border border-secondary italic text-primary/80 font-bold leading-relaxed text-lg">
                       "{aiAnalysis.summary}"
                     </div>
                     
@@ -269,7 +243,7 @@ export default function Dashboard() {
                         <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-primary/40 ml-2">Power Strengths</h4>
                         <div className="space-y-4">
                           {aiAnalysis.strengths.map((s, i) => (
-                            <div key={i} className="flex items-center p-5 rounded-[2rem] bg-white border border-secondary text-[12px] font-black text-primary uppercase tracking-tight shadow-sm hover:translate-x-2 transition-transform">
+                            <div key={i} className="flex items-center p-5 rounded-[2rem] bg-white dark:bg-white/10 border border-secondary text-[12px] font-black text-primary uppercase tracking-tight shadow-sm hover:translate-x-2 transition-transform">
                                <TrendingUp size={16} className="mr-4 text-accent" />
                                {s}
                             </div>
@@ -288,21 +262,6 @@ export default function Dashboard() {
                         </div>
                       </div>
                     </div>
-
-                    <div className="pt-12 border-t border-secondary/40 space-y-8">
-                      <h4 className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/40 ml-2">Actionable 10m Drills</h4>
-                      <div className="grid grid-cols-1 gap-6">
-                        {aiAnalysis.actionableTips.map((tip, i) => (
-                          <div key={i} className="flex items-start gap-6 p-8 bg-white rounded-[3rem] border border-secondary hover:shadow-xl transition-all cursor-default group">
-                            <div className="p-4 bg-primary rounded-[1.5rem] text-white shadow-2xl shadow-primary/20 group-hover:scale-110 transition-transform shrink-0"><Target size={24} /></div>
-                            <div className="flex-1 space-y-1 pt-1">
-                               <p className="text-[13px] font-black leading-relaxed text-primary uppercase tracking-tight">{tip}</p>
-                               <p className="text-[9px] font-black text-accent uppercase tracking-[0.4em]">EXPRESS PROTOCOL</p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center py-28 text-primary/10">
@@ -314,6 +273,63 @@ export default function Dashboard() {
             </Card>
           </div>
         </div>
+
+        {/* STUNNING PREMIUM SECTION - Optimized for Blue Dark Theme */}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="relative mt-20 p-1 md:p-1.5 rounded-[4.5rem] bg-gradient-to-r from-primary/30 via-accent/40 to-primary/30 shadow-[0_40px_100px_rgba(0,0,0,0.1)] dark:shadow-[0_40px_100px_rgba(31,164,244,0.15)] overflow-hidden group"
+        >
+          {/* Animated Background Elements */}
+          <div className="absolute inset-0 bg-white/20 dark:bg-primary/5 backdrop-blur-3xl" />
+          <motion.div 
+            animate={{ 
+              scale: [1, 1.2, 1],
+              rotate: [0, 90, 0],
+              opacity: [0.3, 0.6, 0.3]
+            }}
+            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -top-1/2 -right-1/4 w-[800px] h-[800px] bg-accent/10 dark:bg-accent/20 rounded-full blur-[120px]" 
+          />
+          <Sparkles className="absolute top-10 right-10 w-40 h-40 text-accent/10 dark:text-accent/30 opacity-20 group-hover:scale-125 transition-transform duration-1000" />
+          
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12 p-12 md:p-20">
+            <div className="flex flex-col md:flex-row items-center gap-10 text-center md:text-left">
+              <div className="relative">
+                <div className="w-24 h-24 md:w-32 md:h-32 rounded-[2.5rem] bg-primary text-white flex items-center justify-center shadow-2xl shadow-primary/40 relative z-10">
+                  <Crown size={48} className="fill-white" />
+                </div>
+                <div className="absolute inset-0 bg-accent animate-ping rounded-[2.5rem] opacity-20" />
+              </div>
+              <div className="space-y-4 max-w-xl">
+                <Badge className="bg-accent text-white border-none px-6 py-2 rounded-full font-black uppercase tracking-[0.3em] text-[10px] shadow-lg">ELITE SEASON PASS</Badge>
+                <h2 className="text-4xl md:text-6xl font-black text-primary tracking-tighter leading-none">
+                  Unlock Global <span className="text-accent italic">Elite Status.</span>
+                </h2>
+                <p className="text-sm md:text-lg font-bold text-muted-foreground/80 dark:text-white/60 leading-relaxed uppercase tracking-widest">
+                  Members who maintain a rolling average above 36pts for 3 consecutive months gain access to the "Charity Invitational" & custom golf gear.
+                </p>
+              </div>
+            </div>
+
+            {/* Premium Right-Aligned Button */}
+            <div className="shrink-0">
+              <Button 
+                className="bull-button !w-40 !h-40 md:!w-48 md:!h-48 !bg-primary !text-white !border-[12px] !border-background/50 hover:scale-110 active:scale-95 transition-all shadow-[0_30px_60px_rgba(0,0,0,0.1)] group"
+                onClick={() => toast({ title: "Priority Queue", description: "You are now on the waitlist for the Invitational." })}
+              >
+                <div className="flex flex-col items-center gap-2">
+                  <span className="text-[12px] font-black uppercase tracking-[0.2em]">ENGAGE</span>
+                  <ArrowRight size={28} className="group-hover:translate-x-2 transition-transform" />
+                </div>
+              </Button>
+            </div>
+          </div>
+          
+          {/* Bottom Glossy Bar */}
+          <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-50" />
+        </motion.div>
       </div>
     </AppLayout>
   )
