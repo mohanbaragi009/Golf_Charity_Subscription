@@ -85,7 +85,7 @@ export default function Dashboard() {
                <p className="text-[11px] text-muted-foreground font-black uppercase tracking-[0.3em] opacity-60">Real-time Performance Analytics</p>
             </div>
           </div>
-          <div className="flex items-center gap-6 px-10 py-5 rounded-[2.5rem] bg-secondary border border-primary/5 shadow-inner">
+          <div className="flex items-center gap-6 px-10 py-5 rounded-[2.5rem] bg-secondary dark:bg-white/5 border border-primary/5 shadow-inner">
              <Timer size={20} className="text-accent" />
              <div className="flex flex-col">
                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/40 leading-none mb-1">Next Sync</span>

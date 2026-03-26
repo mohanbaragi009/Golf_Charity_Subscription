@@ -1,4 +1,3 @@
-
 "use client"
 
 import * as React from "react"
@@ -13,7 +12,7 @@ export default function LandingPage() {
   const { user } = useUser()
 
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-white dark:bg-background relative overflow-hidden font-sans transition-colors duration-500">
       {/* Design Elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-[60vh] bg-gradient-to-b from-primary/5 to-transparent" />
@@ -66,7 +65,7 @@ export default function LandingPage() {
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="inline-flex items-center gap-3 px-6 py-3 bg-secondary rounded-full border border-primary/10"
+              className="inline-flex items-center gap-3 px-6 py-3 bg-secondary/50 dark:bg-white/5 rounded-full border border-primary/10"
             >
               <Timer size={20} className="text-accent" />
               <span className="text-[11px] font-black text-primary uppercase tracking-[0.2em]">Verified Impact in 10 Minutes</span>
@@ -83,10 +82,10 @@ export default function LandingPage() {
                   {user ? "Go to Hub" : "Get Started"} <ArrowRight size={24} className="ml-4" />
                 </Button>
               </Link>
-              <div className="flex items-center gap-5 px-10 h-20 border-2 border-primary/5 rounded-[2.5rem] bg-white/40 backdrop-blur-xl w-full sm:w-auto">
+              <div className="flex items-center gap-5 px-10 h-20 border-2 border-primary/5 rounded-[2.5rem] bg-white/40 dark:bg-white/5 backdrop-blur-xl w-full sm:w-auto">
                  <div className="flex -space-x-4">
                    {[1,2,3].map(i => (
-                     <div key={i} className="w-10 h-10 lg:w-12 lg:h-12 rounded-full border-[3px] border-white bg-primary/10 flex items-center justify-center font-black text-primary text-[10px] lg:text-[11px]">U{i}</div>
+                     <div key={i} className="w-10 h-10 lg:w-12 lg:h-12 rounded-full border-[3px] border-white dark:border-background bg-primary/10 flex items-center justify-center font-black text-primary text-[10px] lg:text-[11px]">U{i}</div>
                    ))}
                  </div>
                  <div className="flex flex-col">
@@ -103,9 +102,9 @@ export default function LandingPage() {
             className="relative"
           >
              <div className="absolute inset-0 bg-primary/10 rounded-[5rem] blur-[80px]" />
-             <div className="relative glass-card p-10 lg:p-16 space-y-10 lg:space-y-12 border-2 border-white/80 bg-white/30">
+             <div className="relative glass-card p-10 lg:p-16 space-y-10 lg:space-y-12 border-2 border-white/80 dark:border-white/5 bg-white/30">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-10">
-                  <div className="p-8 lg:p-10 rounded-[3rem] bg-white shadow-2xl shadow-black/[0.02] border border-secondary group hover:scale-105 transition-transform">
+                  <div className="p-8 lg:p-10 rounded-[3rem] bg-white dark:bg-white/5 shadow-2xl shadow-black/[0.02] border border-secondary dark:border-white/5 group hover:scale-105 transition-transform">
                      <Zap size={40} className="text-accent mb-6 fill-accent" />
                      <h3 className="text-3xl font-black text-primary tracking-tight">Express</h3>
                      <p className="text-[10px] font-black text-muted-foreground uppercase mt-3 tracking-widest opacity-60">10m Verification</p>
@@ -116,7 +115,7 @@ export default function LandingPage() {
                      <p className="text-[10px] font-black opacity-70 uppercase mt-3 tracking-widest">100% Verified Impact</p>
                   </div>
                 </div>
-                <div className="p-10 rounded-[3.5rem] bg-white border border-secondary flex flex-col sm:flex-row items-center justify-between shadow-sm gap-6 sm:gap-0">
+                <div className="p-10 rounded-[3.5rem] bg-white dark:bg-white/5 border border-secondary dark:border-white/5 flex flex-col sm:flex-row items-center justify-between shadow-sm gap-6 sm:gap-0">
                    <div className="space-y-1 text-center sm:text-left">
                      <h4 className="text-lg font-black text-primary tracking-tight">Current Draw Pool</h4>
                      <p className="text-[11px] font-black text-accent uppercase tracking-[0.3em]">Live Status: $45,200</p>
@@ -130,7 +129,7 @@ export default function LandingPage() {
         </div>
       </main>
 
-      <footer className="container mx-auto px-6 py-16 border-t border-secondary mt-20 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+      <footer className="container mx-auto px-6 py-16 border-t border-secondary dark:border-white/5 mt-20 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
         <div className="flex items-center gap-3">
            <Zap size={24} className="text-primary fill-primary" />
            <span className="text-[11px] font-black uppercase tracking-[0.5em] text-primary">GOCHARITY ENGINE v2.5</span>

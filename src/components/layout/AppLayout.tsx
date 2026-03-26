@@ -133,7 +133,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                       "group relative rounded-[1.5rem] px-6 py-8 h-auto transition-all duration-400 border-2 border-transparent",
                       pathname === item.href 
                         ? "bg-primary text-primary-foreground shadow-xl shadow-primary/20" 
-                        : "text-muted-foreground hover:bg-secondary"
+                        : "text-muted-foreground hover:bg-secondary/50 dark:hover:bg-white/5"
                     )}
                   >
                     <Link href={item.href}>
@@ -150,7 +150,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               <Button 
                 variant="ghost" 
                 onClick={toggleTheme}
-                className="w-full h-14 rounded-2xl bg-secondary/50 text-primary border border-primary/5 font-black uppercase tracking-widest text-[10px] flex items-center justify-between px-6"
+                className="w-full h-14 rounded-2xl bg-secondary/50 dark:bg-white/5 text-primary border border-primary/5 font-black uppercase tracking-widest text-[10px] flex items-center justify-between px-6"
               >
                 <span className="flex items-center gap-2">
                   {theme === "light" ? <Sun size={14} /> : <Moon size={14} />}
@@ -186,7 +186,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <SidebarFooter className="p-8 border-t border-border">
             {user ? (
               <div className="flex flex-col gap-4">
-                <div className="p-4 rounded-[1.5rem] bg-secondary flex items-center gap-4 group transition-all">
+                <div className="p-4 rounded-[1.5rem] bg-secondary dark:bg-white/5 flex items-center gap-4 group transition-all">
                   <Avatar className="w-12 h-12 rounded-xl shadow-lg shadow-primary/20 border border-background">
                     <AvatarImage src={user.photoURL || ""} />
                     <AvatarFallback className="bg-primary text-primary-foreground font-black text-lg">
