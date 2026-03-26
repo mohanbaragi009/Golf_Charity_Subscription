@@ -57,20 +57,23 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8">
           {[
-            { icon: Trophy, label: "Current handicap", value: "14.5", sub: "-0.4 Last Week" },
-            { icon: Target, label: "Express Index", value: "36.4", sub: "Avg Top 5 Rounds" },
-            { icon: Zap, label: "Active Entries", value: "12", sub: "Pool Eligibility: YES" },
+            { icon: Trophy, label: "Current handicap", value: "14.5", sub: "-0.4 Last Week", color: 'primary' },
+            { icon: Target, label: "Express Index", value: "36.4", sub: "Avg Top 5 Rounds", color: 'primary' },
+            { icon: Zap, label: "Active Entries", value: "12", sub: "Pool Eligibility: YES", color: 'accent' },
+            { icon: Heart, label: "Impact Score", value: "98/100", sub: "Global Rank: Top 2%", color: 'accent' },
           ].map((stat, i) => (
-            <Card key={i} className="glass-card hover:scale-[1.02] transition-all">
+            <Card key={i} className="glass-card overflow-hidden hover:translate-y-[-5px] transition-transform group">
               <CardContent className="p-10 space-y-6">
-                <div className="p-4 rounded-[1.5rem] w-fit bg-primary/10 text-primary"><stat.icon size={24} /></div>
-                <div className="space-y-1">
-                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground opacity-50">{stat.label}</p>
-                  <h3 className="text-4xl font-black tracking-tighter text-primary truncate">{stat.value}</h3>
+                <div className={cn("p-4 rounded-[1.5rem] w-fit", stat.color === 'accent' ? 'bg-accent/10 text-accent' : 'bg-primary/10 text-primary')}>
+                  <stat.icon size={24} />
                 </div>
-                <p className="text-[9px] font-black uppercase tracking-widest text-primary/60">{stat.sub}</p>
+                <div className="space-y-1">
+                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground opacity-50 leading-tight">{stat.label}</p>
+                  <h3 className="text-3xl sm:text-4xl font-black tracking-tighter text-primary truncate">{stat.value}</h3>
+                </div>
+                <p className="text-[9px] font-black uppercase tracking-widest text-primary/60 truncate">{stat.sub}</p>
               </CardContent>
             </Card>
           ))}
@@ -78,32 +81,54 @@ export default function Dashboard() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-7 space-y-12">
-            <Card className="glass-card p-6">
-              <CardHeader className="p-10"><CardTitle className="text-3xl font-black text-primary tracking-tight">Express Dynamic</CardTitle></CardHeader>
+            <Card className="glass-card p-6 overflow-hidden">
+              <CardHeader className="p-10">
+                <CardTitle className="text-3xl font-black text-primary tracking-tight">Express Dynamic</CardTitle>
+                <CardDescription className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground opacity-40">Rolling 5-Month Performance</CardDescription>
+              </CardHeader>
               <CardContent className="h-[350px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={MOCK_DATA}>
                     <XAxis dataKey="name" hide />
-                    <Tooltip />
-                    <Area type="monotone" dataKey="score" stroke="hsl(var(--primary))" fill="hsl(var(--primary)/0.2)" />
+                    <Tooltip 
+                      contentStyle={{ borderRadius: '20px', border: 'none', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}
+                    />
+                    <Area 
+                      type="monotone" 
+                      dataKey="score" 
+                      stroke="hsl(var(--primary))" 
+                      fill="hsl(var(--primary)/0.2)" 
+                      strokeWidth={4}
+                    />
                   </AreaChart>
                 </ResponsiveContainer>
               </CardContent>
             </Card>
           </div>
           <div className="lg:col-span-5">
-            <Card className="glass-card h-full bg-primary/5 border-none p-10 space-y-8">
-              <h4 className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/40">AI Analysis</h4>
-              {aiAnalysis ? (
-                <div className="space-y-6">
-                  <p className="italic text-primary/80 font-bold">"{aiAnalysis.summary}"</p>
-                  <div className="space-y-4">
-                    {aiAnalysis.strengths.slice(0, 2).map((s, i) => (
-                      <div key={i} className="flex items-center p-4 rounded-2xl bg-white dark:bg-white/10 text-xs font-black text-primary uppercase"><TrendingUp size={14} className="mr-3 text-accent" />{s}</div>
-                    ))}
+            <Card className="glass-card h-full bg-primary/5 border-none p-10 space-y-8 flex flex-col justify-between">
+              <div>
+                <h4 className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/40 mb-8">AI Express Insights</h4>
+                {aiAnalysis ? (
+                  <div className="space-y-8">
+                    <p className="italic text-primary/80 font-bold leading-relaxed">"{aiAnalysis.summary}"</p>
+                    <div className="space-y-4">
+                      {aiAnalysis.strengths.slice(0, 2).map((s, i) => (
+                        <div key={i} className="flex items-center p-4 rounded-2xl bg-white dark:bg-white/10 text-[10px] font-black text-primary uppercase border border-primary/5 tracking-wider">
+                          <TrendingUp size={14} className="mr-3 text-accent" />
+                          {s}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ) : <div className="animate-pulse h-40 bg-primary/10 rounded-3xl" />}
+                ) : (
+                  <div className="space-y-4">
+                    <div className="animate-pulse h-24 bg-primary/10 rounded-3xl" />
+                    <div className="animate-pulse h-12 bg-primary/5 rounded-2xl w-3/4" />
+                  </div>
+                )}
+              </div>
+              <Button variant="outline" className="w-full h-14 rounded-2xl border-primary/10 font-black uppercase tracking-widest text-[10px] hover:bg-primary/5">Recalculate Metrics</Button>
             </Card>
           </div>
         </div>
@@ -121,10 +146,14 @@ export default function Dashboard() {
               <div className="space-y-4 max-w-xl text-center md:text-left">
                 <Badge className="bg-accent text-white border-none px-6 py-2 rounded-full font-black uppercase tracking-[0.3em] text-[10px]">ELITE SEASON PASS</Badge>
                 <h2 className="text-4xl md:text-6xl font-black text-primary tracking-tighter leading-none">Unlock <span className="text-accent italic">Elite Status.</span></h2>
+                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest leading-loose opacity-60">Instant access to global prize pools, priority AI audits, and verified member status.</p>
               </div>
             </div>
-            <Button className="bull-button !w-40 !h-40 md:!w-48 md:!h-48 border-[12px] border-background/50 hover:scale-110 shadow-2xl group transition-all">
-              <div className="flex flex-col items-center gap-2"><span className="text-[12px] font-black uppercase tracking-widest">ENGAGE</span><ArrowRight size={28} className="group-hover:translate-x-2 transition-transform" /></div>
+            <Button className="bull-button !w-40 !h-40 md:!w-48 md:!h-48 border-[12px] border-background/50 hover:scale-110 shadow-2xl group transition-all shrink-0">
+              <div className="flex flex-col items-center gap-2">
+                <span className="text-[12px] font-black uppercase tracking-widest">ENGAGE</span>
+                <ArrowRight size={28} className="group-hover:translate-x-2 transition-transform" />
+              </div>
             </Button>
           </div>
         </motion.div>

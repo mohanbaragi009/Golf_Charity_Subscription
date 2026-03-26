@@ -120,37 +120,63 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <div className="mt-4 px-2">
               <Button variant="ghost" onClick={toggleTheme} className="w-full h-14 rounded-2xl bg-secondary/50 dark:bg-white/5 text-primary border border-primary/5 font-black uppercase tracking-widest text-[10px] flex items-center justify-between px-6">
                 <span className="flex items-center gap-2">{theme === "light" ? <Sun size={14} /> : <Moon size={14} />} {theme === "light" ? "Light" : "Dark"}</span>
-                <div className="w-8 h-4 rounded-full bg-primary/20 relative"><motion.div animate={{ x: theme === "light" ? 0 : 16 }} className="absolute top-1 left-1 w-2 h-2 rounded-full bg-primary" /></div>
+                <div className="w-8 h-4 rounded-full bg-primary/20 relative">
+                  <motion.div 
+                    animate={{ x: theme === "light" ? 0 : 16 }} 
+                    className="absolute top-1 left-1 w-2 h-2 rounded-full bg-primary" 
+                  />
+                </div>
               </Button>
             </div>
           </SidebarContent>
           <SidebarFooter className="p-8 border-t border-border">
             {user ? (
               <div className="flex flex-col gap-4">
-                <div className="p-4 rounded-[1.5rem] bg-secondary dark:bg-white/5 flex items-center gap-4">
+                <div className="p-4 rounded-[1.5rem] bg-secondary dark:bg-white/5 flex items-center gap-4 border border-primary/5">
                   <Avatar className="w-12 h-12 rounded-xl">
                     <AvatarImage src={user.photoURL || ""} />
-                    <AvatarFallback className="bg-primary text-primary-foreground font-black">{user.displayName?.charAt(0) || user.email?.charAt(0).toUpperCase()}</AvatarFallback>
+                    <AvatarFallback className="bg-primary text-primary-foreground font-black">
+                      {user.displayName?.charAt(0) || user.email?.charAt(0).toUpperCase()}
+                    </AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col min-w-0">
-                    <span className="text-sm font-black text-primary truncate">{user.displayName || "User"}</span>
-                    <span className="text-[9px] text-accent font-black uppercase tracking-widest">Elite Member</span>
+                    <span className="text-sm font-black text-primary truncate">{user.displayName || "Impact Member"}</span>
+                    <span className="text-[9px] text-accent font-black uppercase tracking-widest">Verified Elite</span>
                   </div>
                 </div>
-                <Button variant="ghost" onClick={handleSignOut} className="w-full h-12 rounded-xl text-primary/40 font-black uppercase text-[9px]"><LogOut size={14} className="mr-2" /> Sign Out</Button>
+                <Button variant="ghost" onClick={handleSignOut} className="w-full h-12 rounded-xl text-primary/40 font-black uppercase text-[9px] hover:text-primary transition-colors">
+                  <LogOut size={14} className="mr-2" /> Sign Out
+                </Button>
               </div>
             ) : (
-              <Link href="/auth" className="w-full"><Button className="w-full h-14 rounded-2xl bg-primary text-primary-foreground font-black uppercase text-[10px]"><User size={16} className="mr-2" /> Sign In</Button></Link>
+              <Link href="/auth" className="w-full">
+                <Button className="w-full h-14 rounded-2xl bg-primary text-primary-foreground font-black uppercase text-[10px] shadow-lg shadow-primary/20">
+                  <User size={16} className="mr-2" /> Sign In
+                </Button>
+              </Link>
             )}
           </SidebarFooter>
         </Sidebar>
 
         <main className="flex-1 overflow-auto relative z-10 p-4 md:p-12">
-          <div className="md:hidden mb-6 flex justify-between items-center bg-card/60 backdrop-blur-xl p-4 rounded-3xl">
-            <Link href="/" className="flex items-center gap-2"><Zap size={20} className="text-primary fill-primary" /><span className="text-xl font-black text-primary">GO</span></Link>
+          <div className="md:hidden mb-6 flex justify-between items-center bg-card/60 backdrop-blur-xl p-4 rounded-3xl border border-white/10">
+            <Link href="/" className="flex items-center gap-2">
+              <Zap size={20} className="text-primary fill-primary" />
+              <span className="text-xl font-black text-primary tracking-tighter">GO</span>
+            </Link>
             <SidebarTrigger />
           </div>
-          <AnimatePresence mode="wait"><motion.div key={pathname} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }}>{children}</motion.div></AnimatePresence>
+          <AnimatePresence mode="wait">
+            <motion.div 
+              key={pathname} 
+              initial={{ opacity: 0, y: 15 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.3 }}
+            >
+              {children}
+            </motion.div>
+          </AnimatePresence>
         </main>
       </div>
     </SidebarProvider>
